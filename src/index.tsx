@@ -4,6 +4,6 @@ import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App text="문자" number={3} />
+    <App />
   </React.StrictMode>
 );

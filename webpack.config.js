@@ -15,6 +15,7 @@ module.exports = {
       directory: path.resolve(__dirname, 'dist'),
     },
     open: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [

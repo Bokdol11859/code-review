@@ -1,14 +1,22 @@
-interface Props {
-  text: string;
-  number: number;
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+function AComponent() {
+  return <div>a 페이지</div>;
 }
 
-function App({ text, number }: Props) {
+function BComponent() {
+  return <div>b 페이지</div>;
+}
+
+function App() {
   return (
-    <div>
-      {text}
-      {number}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Navigate replace to="a"></Navigate>}></Route>
+        <Route path="a" element={<AComponent></AComponent>}></Route>
+        <Route path="b" element={<BComponent></BComponent>}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 export default App;
