@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 function AComponent() {
-  return <div>a 페이지</div>;
+  return <div className="text-3xl font-bold">a 페이지</div>;
 }
 
 function BComponent() {
