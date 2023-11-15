@@ -12,9 +12,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Navigate replace to="a"></Navigate>}></Route>
-        <Route path="a" element={<AComponent></AComponent>}></Route>
-        <Route path="b" element={<BComponent></BComponent>}></Route>
+        <Route index element={<Navigate replace to="a" />} />
+        <Route path="a" element={<AComponent />} />
+        <Route path="b" element={<BComponent />} />
       </Routes>
     </BrowserRouter>
   );
