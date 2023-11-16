@@ -2,7 +2,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AppLayout from './common-ui/app-layout';
 
 function AComponent() {
-  return <div className="text-3xl font-bold">a 페이지</div>;
+  return (
+    <div className="font-bold text-neutral-text-strong bg-accent-background rounded-large text-S">
+      a 페이지
+    </div>
+  );
 }
 
 function BComponent() {
