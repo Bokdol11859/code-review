@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -8,20 +9,20 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   devServer: {
     port: 3000,
-    static: {
-      directory: path.resolve(__dirname, 'dist'),
-    },
-    open: true,
     historyApiFallback: true,
+    devMiddleware: {
+      writeToDisk: true,
+    },
   },
   module: {
     rules: [
       {
         test: /\.(png|jpg|svg)$/,
-        type: 'asset',
+        type: 'asset/resource',
       },
       {
         test: /\.css$/,
@@ -61,6 +62,17 @@ module.exports = {
       template: path.resolve(__dirname, 'index.html'),
     }),
     new MiniCssExtractPlugin(),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.posix.join(
+            path.resolve(__dirname, 'public').replace(/\\/g, '/'),
+            '*'
+          ),
+          to: path.resolve(__dirname, 'dist'),
+        },
+      ],
+    }),
   ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
