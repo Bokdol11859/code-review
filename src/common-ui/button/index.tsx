@@ -1,8 +1,8 @@
 import { ComponentPropsWithoutRef } from 'react';
 
 interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
-  variant: 'contained' | 'outline';
-  size: 'S' | 'L';
+  variant: 'contained' | 'outline' | 'ghosts';
+  size: 'S' | 'M' | 'L';
   children: React.ReactNode;
 }
 
@@ -12,11 +12,13 @@ const base =
 const variants = {
   contained: 'text-accent-text bg-accent-background',
   outline: 'text-accent-text-weak border border-accent-border-weak',
+  ghosts: '',
 };
 
 const sizes = {
-  S: 'w-[120px] h-10 px-4 gap-1 text-S font-bold rounded-regular',
-  L: 'w-60 h-14 px-6 gap-1 text-L font-bold rounded-large',
+  S: 'w-[120px] h-10 gap-1 text-S font-bold rounded-regular',
+  M: 'w-40 h-10 gap-1 text-M font-bold rounded-medium',
+  L: 'w-60 h-14 gap-1 text-L font-bold rounded-large',
 };
 
 function Button({ variant, size, children, ...rest }: ButtonProps) {
