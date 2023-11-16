@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',
@@ -72,6 +73,10 @@ module.exports = {
           to: path.resolve(__dirname, 'dist'),
         },
       ],
+    }),
+    new Dotenv({
+      path: path.resolve(__dirname, '.env'),
+      prefix: 'import.meta.env.',
     }),
   ],
   resolve: {
