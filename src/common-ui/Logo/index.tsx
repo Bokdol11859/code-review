@@ -3,7 +3,7 @@ function Logo() {
 
   return (
     <div className="text-center">
-      <img className="w-{200} h-10" src={src} alt="Logo" />
+      <img className="w-[200px] h-10" src={src} alt="Logo" />
     </div>
   );
 }
