@@ -6,12 +6,12 @@ export interface GetIssuesUseCase {
 }
 
 export class GetIssues implements GetIssuesUseCase {
-  private todoRepo: IssueRepository;
-  constructor(_todoRepo: IssueRepository) {
-    this.todoRepo = _todoRepo;
+  private issueRepo: IssueRepository;
+  constructor(_issueRepo: IssueRepository) {
+    this.issueRepo = _issueRepo;
   }
 
   async invoke() {
-    return this.todoRepo.getIssues();
+    return this.issueRepo.getIssues();
   }
 }
