@@ -1,5 +1,9 @@
 import { ReactNode, createContext, useContext } from 'react';
 
+interface TableContextType {
+  columns: string;
+}
+
 interface TableProps {
   columns: string;
   children: ReactNode;
@@ -18,7 +22,7 @@ interface RowProps {
   children: ReactNode;
 }
 
-const TableContext = createContext<Pick<TableProps, 'columns'>>(null!);
+const TableContext = createContext<TableContextType>(null!);
 
 function Table({ columns, children }: TableProps) {
   return (
@@ -44,7 +48,7 @@ function Header({ children }: HeaderProps) {
 }
 
 function Body<T>({ data, render }: BodyProps<T>) {
-  if (!data || data?.length === 0)
+  if (!data || data.length === 0)
     return <p className="text-center m-6">표시할 항목이 없습니다</p>;
 
   return <div className="bg-neutral-background-strong">{data.map(render)}</div>;
