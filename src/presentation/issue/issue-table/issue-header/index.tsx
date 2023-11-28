@@ -14,6 +14,25 @@ function IssueHeader({
   selectedIssues,
   selectAllIssues,
 }: IssueHeaderProps) {
+  if (selectedIssues.length)
+    return (
+      <Table.Header>
+        <Checkbox
+          checked={Boolean(selectedIssues.length)}
+          onChange={() => selectAllIssues(issues?.map(({ id }) => id) ?? [])}
+        />
+
+        <span className="flex items-center font-bold text-neutral-text-weak">
+          {selectedIssues.length}개 이슈 선택
+        </span>
+
+        <Button variant="ghosts" size="M" flexible>
+          <span>상태 수정</span>
+          <img src="/public/chevron-down.svg" alt="상태 수정" />
+        </Button>
+      </Table.Header>
+    );
+
   return (
     <Table.Header>
       <Checkbox
