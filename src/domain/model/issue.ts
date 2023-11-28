@@ -1,5 +1,5 @@
 export interface Issue {
-  id: number;
+  id: Brand<'id', Issue>;
   title: string;
   createdAt: Date;
 }

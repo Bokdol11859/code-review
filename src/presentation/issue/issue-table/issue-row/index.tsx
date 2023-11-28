@@ -1,17 +1,23 @@
+import Checkbox from '../../../../common-ui/checkbox';
 import Table from '../../../../common-ui/table';
 import { Issue } from '../../../../domain/model/issue';
 import { timeDiffFromNow } from '../../../../utils/helpers';
 
 interface IssueRowProps {
   issue: Issue;
+  selectedIssues: Brand<'id', Issue>[];
+  selectIssue: (id: Brand<'id', Issue>) => void;
 }
 
-function IssueRow({ issue }: IssueRowProps) {
+function IssueRow({ issue, selectIssue, selectedIssues }: IssueRowProps) {
   const { id, title, createdAt } = issue;
 
   return (
     <Table.Row>
-      <input type="checkbox" className="w-4 h-4 mt-2" />
+      <Checkbox
+        checked={selectedIssues.includes(id)}
+        onChange={() => selectIssue(id)}
+      />
 
       <div className="flex flex-col gap-2">
         <div className="flex gap-1">
