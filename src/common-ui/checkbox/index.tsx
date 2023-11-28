@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef } from 'react';
 
 interface CheckboxProps extends ComponentPropsWithoutRef<'input'> {}
 
-function Checkbox({ checked, onChange }: CheckboxProps) {
-  return <input type="checkbox" checked={checked} onChange={onChange} />;
+function Checkbox({ ...rest }: CheckboxProps) {
+  return <input type="checkbox" {...rest} />;
 }
 export default Checkbox;
