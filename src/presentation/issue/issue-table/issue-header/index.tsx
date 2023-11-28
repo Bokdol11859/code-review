@@ -1,6 +1,5 @@
 import Button from '../../../../common-ui/button';
 import Checkbox from '../../../../common-ui/checkbox';
-import Table from '../../../../common-ui/table';
 import { Issue } from '../../../../domain/model/issue';
 
 interface IssueHeaderProps {
@@ -16,7 +15,7 @@ function IssueHeader({
 }: IssueHeaderProps) {
   if (selectedIssues.length)
     return (
-      <Table.Header>
+      <>
         <Checkbox
           checked={Boolean(selectedIssues.length)}
           onChange={() => selectAllIssues(issues?.map(({ id }) => id) ?? [])}
@@ -30,11 +29,11 @@ function IssueHeader({
           <span>상태 수정</span>
           <img src="/public/chevron-down.svg" alt="상태 수정" />
         </Button>
-      </Table.Header>
+      </>
     );
 
   return (
-    <Table.Header>
+    <>
       <Checkbox
         checked={Boolean(selectedIssues.length)}
         onChange={() => selectAllIssues(issues?.map(({ id }) => id) ?? [])}
@@ -69,7 +68,7 @@ function IssueHeader({
           <img src="/public/chevron-down.svg" alt="이슈" />
         </Button>
       </div>
-    </Table.Header>
+    </>
   );
 }
 export default IssueHeader;

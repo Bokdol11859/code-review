@@ -10,11 +10,13 @@ function IssueTable() {
 
   return (
     <Table columns="1rem 1fr auto">
-      <IssueHeader
-        issues={issues}
-        selectedIssues={selectedIssues}
-        selectAllIssues={selectAllIssues}
-      />
+      <Table.Header>
+        <IssueHeader
+          issues={issues}
+          selectedIssues={selectedIssues}
+          selectAllIssues={selectAllIssues}
+        />
+      </Table.Header>
       <Table.Body
         data={issues}
         render={(issue) => (
