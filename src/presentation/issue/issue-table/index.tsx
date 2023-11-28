@@ -1,4 +1,4 @@
-import useIssues from '../use-issues';
+import useIssues from './use-issues';
 import Table from '../../../common-ui/table';
 import IssueRow from './issue-row';
 import IssueHeader from './issue-header';

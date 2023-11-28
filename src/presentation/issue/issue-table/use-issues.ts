@@ -1,7 +1,7 @@
-import IssueDataSourceImpl from '../../data/data-source/api/issue-data-source-impl';
-import { IssueRepositoryImpl } from '../../data/repository/issue-repository-impl';
+import IssueDataSourceImpl from '../../../data/data-source/api/issue-data-source-impl';
+import { IssueRepositoryImpl } from '../../../data/repository/issue-repository-impl';
 
-import { GetIssues } from '../../domain/use-case/issues/get-issues';
+import { GetIssues } from '../../../domain/use-case/issues/get-issues';
 import { useQuery } from '@tanstack/react-query';
 
 export default function useIssues() {
