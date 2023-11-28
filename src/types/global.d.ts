@@ -1,5 +1,5 @@
 interface ImportMeta {
   env: {
-    [key: string]: string | undefined;
+    [key: string]: string;
   };
 }
