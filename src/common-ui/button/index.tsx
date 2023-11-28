@@ -4,6 +4,7 @@ interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
   variant: 'contained' | 'outline' | 'ghosts';
   size: 'S' | 'M' | 'L';
   children: React.ReactNode;
+  flexible: boolean;
 }
 
 const base =
@@ -21,10 +22,19 @@ const sizes = {
   L: 'w-60 h-14 gap-1 text-L font-bold rounded-large',
 };
 
-function Button({ variant, size, children, ...rest }: ButtonProps) {
+function Button({
+  variant,
+  size,
+  flexible = false,
+  children,
+  ...rest
+}: ButtonProps) {
   return (
     <button
-      className={[base, variants[variant], sizes[size]].join(' ')}
+      className={
+        [base, variants[variant], sizes[size]].join(' ') +
+        `${flexible ? ' flex w-fit h-fit' : ''}`
+      }
       {...rest}
     >
       {children}
