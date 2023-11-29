@@ -1,5 +1,7 @@
 import Button from '../../../../common-ui/button';
 import Checkbox from '../../../../common-ui/checkbox';
+import Menus from '../../../../common-ui/menus';
+import Table from '../../../../common-ui/table';
 import { Issue } from '../../../../domain/model/issue';
 
 interface IssueHeaderProps {
@@ -25,10 +27,20 @@ function IssueHeader({
           {selectedIssues.length}개 이슈 선택
         </span>
 
-        <Button variant="ghosts" size="M" flexible>
-          <span>상태 수정</span>
-          <img src="/public/chevron-down.svg" alt="상태 수정" />
-        </Button>
+        <Menus.OpenButton id="상태수정" windowPosition="right">
+          <Button variant="ghosts" size="M" flexible>
+            <span>상태 수정</span>
+            <img src="/public/chevron-down.svg" alt="상태 수정" />
+          </Button>
+        </Menus.OpenButton>
+
+        <Menus.Window id="상태수정">
+          <Table columns="1fr" size="S">
+            <Table.Header>상태 변경</Table.Header>
+            <Table.Row>선택한 이슈 열기</Table.Row>
+            <Table.Row>선택한 이슈 닫기</Table.Row>
+          </Table>
+        </Menus.Window>
       </>
     );
 
