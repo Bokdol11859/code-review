@@ -12,7 +12,11 @@ export default class IssueDataSourceImpl implements IssueDataSource {
     }
 
     return data.map(({ id, title, created_at }) => {
-      return { id, title, createdAt: new Date(created_at) };
+      return {
+        id: id as Brand<number, Issue>,
+        title,
+        createdAt: new Date(created_at),
+      };
     });
   }
 }

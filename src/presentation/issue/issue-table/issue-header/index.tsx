@@ -4,8 +4,8 @@ import { Issue } from '../../../../domain/model/issue';
 
 interface IssueHeaderProps {
   issues: Issue[] | undefined;
-  selectedIssues: Brand<'id', Issue>[];
-  selectAllIssues: (ids: Brand<'id', Issue>[]) => void;
+  selectedIssues: Brand<number, Issue>[];
+  selectAllIssues: (ids: Brand<number, Issue>[]) => void;
 }
 
 function IssueHeader({

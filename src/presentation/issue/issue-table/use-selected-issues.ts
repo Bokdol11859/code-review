@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Issue } from '../../../domain/model/issue';
 
 export default function useSelectedIssues() {
-  const [selectedIssues, setSelectedIssues] = useState<Brand<'id', Issue>[]>(
+  const [selectedIssues, setSelectedIssues] = useState<Brand<number, Issue>[]>(
     []
   );
 
-  function selectIssue(id: Brand<'id', Issue>) {
+  function selectIssue(id: Brand<number, Issue>) {
     if (selectedIssues.includes(id)) {
       const filteredIssues = selectedIssues.filter((issueId) => issueId !== id);
       setSelectedIssues(filteredIssues);
@@ -15,7 +15,7 @@ export default function useSelectedIssues() {
     }
   }
 
-  function selectAllIssues(ids: Brand<'id', Issue>[]) {
+  function selectAllIssues(ids: Brand<number, Issue>[]) {
     if (selectedIssues.length) {
       setSelectedIssues([]);
     } else {

@@ -5,8 +5,8 @@ import { timeDiffFromNow } from '../../../../utils/helpers';
 
 interface IssueRowProps {
   issue: Issue;
-  selectedIssues: Brand<'id', Issue>[];
-  selectIssue: (id: Brand<'id', Issue>) => void;
+  selectedIssues: Brand<number, Issue>[];
+  selectIssue: (id: Brand<number, Issue>) => void;
 }
 
 function IssueRow({ issue, selectIssue, selectedIssues }: IssueRowProps) {
