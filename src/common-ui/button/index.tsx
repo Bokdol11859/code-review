@@ -1,8 +1,8 @@
 import { ComponentPropsWithoutRef } from 'react';
 
 interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
-  variant: 'contained' | 'outline' | 'ghosts';
-  size: 'S' | 'M' | 'L';
+  variant: keyof typeof variants;
+  size: keyof typeof sizes;
   children: React.ReactNode;
   flexible?: boolean;
   active?: boolean;
