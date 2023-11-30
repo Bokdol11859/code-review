@@ -3,6 +3,7 @@ import Checkbox from '../../../../common-ui/checkbox';
 import Menus from '../../../../common-ui/menus';
 import Table from '../../../../common-ui/table';
 import { Issue } from '../../../../domain/model/issue';
+import useOpenIssues from '../../use-open-issues';
 
 interface IssueHeaderProps {
   issues: Issue[] | undefined;
@@ -15,6 +16,12 @@ function IssueHeader({
   selectedIssues,
   selectAllIssues,
 }: IssueHeaderProps) {
+  const { openIssues } = useOpenIssues();
+
+  function handleOpenIssues() {
+    openIssues(selectedIssues);
+  }
+
   if (selectedIssues.length)
     return (
       <>
@@ -37,7 +44,9 @@ function IssueHeader({
         <Menus.Window id="상태수정">
           <Table columns="1fr" size="S">
             <Table.Header>상태 변경</Table.Header>
-            <Table.Row>선택한 이슈 열기</Table.Row>
+            <Table.Row>
+              <span onClick={handleOpenIssues}>선택한 이슈 열기</span>
+            </Table.Row>
             <Table.Row>선택한 이슈 닫기</Table.Row>
           </Table>
         </Menus.Window>
