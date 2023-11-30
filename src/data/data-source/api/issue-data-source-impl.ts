@@ -36,4 +36,21 @@ export default class IssueDataSourceImpl implements IssueDataSource {
 
     return;
   }
+
+  async closeIssues(ids: Brand<number, Issue>[]): Promise<void> {
+    const toUpsert = ids.map((id) => {
+      return {
+        id,
+        is_open: false,
+      };
+    });
+
+    const { error } = await supabase.from('issues').upsert(toUpsert);
+
+    if (error) {
+      throw new Error('이슈를 닫지 못했습니다.');
+    }
+
+    return;
+  }
 }

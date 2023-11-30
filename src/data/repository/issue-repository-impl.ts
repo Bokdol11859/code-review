@@ -12,4 +12,8 @@ export class IssueRepositoryImpl implements IssueRepository {
   async openIssues(ids: Brand<number, Issue>[]) {
     return this.datasource.openIssues(ids);
   }
+
+  async closeIssues(ids: Brand<number, Issue>[]): Promise<void> {
+    return this.datasource.closeIssues(ids);
+  }
 }
