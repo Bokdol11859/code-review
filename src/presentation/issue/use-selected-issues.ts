@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Issue } from '../../../domain/model/issue';
+import { Issue } from '../../domain/model/issue';
 
 export default function useSelectedIssues() {
   const [selectedIssues, setSelectedIssues] = useState<Brand<number, Issue>[]>(
