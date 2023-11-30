@@ -5,7 +5,7 @@
   "main": "src/index.tsx",
   "scripts": {
     "build": "webpack build --config webpack.config.js",
-    "dev": "webpack serve --config webpack.config.js"
+    "dev": "webpack serve --config webpack.config.js --hot"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "@babel/preset-env": "^7.23.3",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "autoprefixer": "^10.4.16",
@@ -42,6 +43,7 @@
     "mini-css-extract-plugin": "^2.7.6",
     "postcss": "^8.4.31",
     "postcss-loader": "^7.3.3",
+    "react-refresh": "^0.14.0",
     "style-loader": "^3.3.3",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.2.2",

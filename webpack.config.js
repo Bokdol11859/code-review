@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -14,6 +15,7 @@ module.exports = {
   devServer: {
     port: 3000,
     historyApiFallback: true,
+    hot: true,
     devMiddleware: {
       writeToDisk: true,
     },
@@ -49,6 +51,7 @@ module.exports = {
                 ],
                 '@babel/preset-typescript',
               ],
+              plugins: ['react-refresh/babel'],
             },
           },
         ],
@@ -76,6 +79,7 @@ module.exports = {
       path: path.resolve(__dirname, '.env'),
       prefix: 'import.meta.env.',
     }),
+    new ReactRefreshWebpackPlugin(),
   ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
