@@ -38,6 +38,11 @@ interface WindowProps {
   children: ReactNode;
 }
 
+interface ButtonProps {
+  onClick?: () => void;
+  children: ReactNode;
+}
+
 const MenuContext = createContext<MenuContextType>(null!);
 
 function Menus({ children }: MenuProps) {
@@ -101,7 +106,23 @@ function Window({ id, children }: WindowProps) {
   );
 }
 
+function Button({ onClick, children }: ButtonProps) {
+  const { close } = useContext(MenuContext);
+
+  function handleClick() {
+    onClick?.();
+    close();
+  }
+
+  return (
+    <button onClick={handleClick} className="text-start">
+      {children}
+    </button>
+  );
+}
+
 Menus.OpenButton = OpenButton;
 Menus.Window = Window;
+Menus.Button = Button;
 
 export default Menus;

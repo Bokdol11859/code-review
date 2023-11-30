@@ -22,10 +22,12 @@ function IssueHeader({
 
   function handleOpenIssues() {
     openIssues(selectedIssues);
+    selectAllIssues([]);
   }
 
   function handleCloseIssues() {
     closeIssues(selectedIssues);
+    selectAllIssues([]);
   }
 
   if (selectedIssues.length)
@@ -51,10 +53,14 @@ function IssueHeader({
           <Table columns="1fr" size="S">
             <Table.Header>상태 변경</Table.Header>
             <Table.Row>
-              <span onClick={handleOpenIssues}>선택한 이슈 열기</span>
+              <Menus.Button onClick={handleOpenIssues}>
+                선택한 이슈 열기
+              </Menus.Button>
             </Table.Row>
             <Table.Row>
-              <span onClick={handleCloseIssues}>선택한 이슈 닫기</span>
+              <Menus.Button onClick={handleCloseIssues}>
+                선택한 이슈 닫기
+              </Menus.Button>
             </Table.Row>
           </Table>
         </Menus.Window>
