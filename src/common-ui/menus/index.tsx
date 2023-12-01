@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { useOutsideClick } from '../../hooks/useOutsideClick';
 
 const WINDOW_WIDTH = 240;
 
@@ -87,7 +88,8 @@ function OpenButton({ id, children, windowPosition }: OpenButtonProps) {
 }
 
 function Window({ id, children }: WindowProps) {
-  const { openedId, position } = useContext(MenuContext);
+  const { openedId, position, close } = useContext(MenuContext);
+  const windowRef = useOutsideClick<HTMLDivElement>(close);
 
   if (openedId !== id) return null;
 
@@ -99,6 +101,7 @@ function Window({ id, children }: WindowProps) {
         width: `${WINDOW_WIDTH}px`,
       }}
       className={`fixed`}
+      ref={windowRef}
     >
       {children}
     </div>,
