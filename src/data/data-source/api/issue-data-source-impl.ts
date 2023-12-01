@@ -4,7 +4,11 @@ import supabase from './supabase-db/supabase';
 
 export default class IssueDataSourceImpl implements IssueDataSource {
   async getIssues() {
-    const { data, error } = await supabase.from('issues').select('*');
+    const { data, error } = await supabase
+      .from('issues')
+      .select(
+        'id, title, contents, is_open, created_at, labels(id, title, description, text_color, background_color), milestones(id, title, description, due_date, is_open)'
+      );
 
     if (error) {
       throw new Error('이슈를 불러오지 못했습니다.');
