@@ -1,6 +1,6 @@
 import { Issue } from '../../domain/model/issue';
 import { IssueRepository } from '../../domain/repository/issue-repository';
-import { Database } from '../data-source/api/supabase-db/database.types';
+import { IssueAPIEntity } from '../data-source/api/entity/issue-api-entity';
 import IssueDataSource from '../data-source/issue-data-source';
 
 export class IssueRepositoryImpl implements IssueRepository {
@@ -9,7 +9,7 @@ export class IssueRepositoryImpl implements IssueRepository {
   async getIssues() {
     const data = await this.datasource.getIssues();
 
-    return this.mapToDomainModel(data);
+    return this.mapEntityToModel(data);
   }
 
   async openIssues(ids: Brand<number, Issue>[]) {
@@ -20,16 +20,19 @@ export class IssueRepositoryImpl implements IssueRepository {
     return this.datasource.closeIssues(ids);
   }
 
-  private mapToDomainModel(
-    data: Database['public']['Tables']['issues']['Row'][]
-  ): Issue[] {
-    return data.map(({ id, title, created_at, is_open }) => {
-      return {
-        id: id as Brand<number, Issue>,
-        title,
-        isOpen: is_open,
-        createdAt: new Date(created_at),
-      };
-    });
+  private mapEntityToModel(data: IssueAPIEntity[]): Issue[] {
+    return data.map(
+      ({ id, title, created_at, is_open, contents, labels, milestones }) => {
+        return {
+          id: id as Brand<number, Issue>,
+          title,
+          isOpen: is_open,
+          createdAt: new Date(created_at),
+          contents,
+          labels,
+          milestone: milestones,
+        };
+      }
+    );
   }
 }
