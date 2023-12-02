@@ -29,18 +29,17 @@ export class IssueRepositoryImpl implements IssueRepository {
           isOpen: is_open,
           createdAt: new Date(created_at),
           contents,
-          labels: labels.map(
-            ({ id, title, description, text_color, background_color }) => {
-              return {
-                id,
-                title,
-                description,
-                textColor: text_color,
-                backgroundColor: background_color,
-              };
-            }
-          ),
-          milestone: milestones,
+          labels: labels.map(({ id, title, text_color, background_color }) => {
+            return {
+              id,
+              title,
+              textColor: text_color,
+              backgroundColor: background_color,
+            };
+          }),
+          milestone: milestones
+            ? { id: milestones.id, title: milestones.title }
+            : null,
         };
       }
     );
