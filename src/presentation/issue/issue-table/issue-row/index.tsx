@@ -31,7 +31,7 @@ function IssueRow({ issue }: IssueRowProps) {
               backgroundColor={label.backgroundColor}
               key={id}
             >
-              {title}
+              {label.title}
             </Label>
           )}
         </div>
