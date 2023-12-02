@@ -9,7 +9,7 @@ interface LabelInfo
 interface MilestoneInfo extends Pick<Tables<'milestones'>, 'id' | 'title'> {}
 
 export interface IssueAPIEntity
-  extends Omit<Tables<'issues'>, 'milestone_id' | 'contents'> {
-  labels: LabelInfo[];
+  extends Omit<Tables<'issues'>, 'label_id' | 'milestone_id' | 'contents'> {
+  labels: LabelInfo | null;
   milestones: MilestoneInfo | null;
 }

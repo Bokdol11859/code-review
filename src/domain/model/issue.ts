@@ -6,6 +6,6 @@ export interface Issue {
   title: string;
   isOpen: boolean;
   createdAt: Date;
-  labels: Pick<Label, 'id' | 'title' | 'textColor' | 'backgroundColor'>[];
+  label: Pick<Label, 'id' | 'title' | 'textColor' | 'backgroundColor'> | null;
   milestone: Pick<Milestone, 'id' | 'title'> | null;
 }

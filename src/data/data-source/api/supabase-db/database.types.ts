@@ -9,42 +9,13 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      issue_label: {
-        Row: {
-          issue_id: number
-          label_id: number
-        }
-        Insert: {
-          issue_id: number
-          label_id: number
-        }
-        Update: {
-          issue_id?: number
-          label_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "issue_label_issue_id_fkey"
-            columns: ["issue_id"]
-            isOneToOne: false
-            referencedRelation: "issues"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "issue_label_label_id_fkey"
-            columns: ["label_id"]
-            isOneToOne: false
-            referencedRelation: "labels"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       issues: {
         Row: {
           contents: string | null
           created_at: string
           id: number
           is_open: boolean
+          label_id: number | null
           milestone_id: number | null
           title: string
         }
@@ -53,6 +24,7 @@ export interface Database {
           created_at?: string
           id?: number
           is_open?: boolean
+          label_id?: number | null
           milestone_id?: number | null
           title?: string
         }
@@ -61,10 +33,18 @@ export interface Database {
           created_at?: string
           id?: number
           is_open?: boolean
+          label_id?: number | null
           milestone_id?: number | null
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "issues_label_id_fkey"
+            columns: ["label_id"]
+            isOneToOne: false
+            referencedRelation: "labels"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "issues_milestone_id_fkey"
             columns: ["milestone_id"]

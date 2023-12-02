@@ -10,7 +10,7 @@ interface IssueRowProps {
 }
 
 function IssueRow({ issue }: IssueRowProps) {
-  const { id, title, createdAt, labels, milestone } = issue;
+  const { id, title, createdAt, label, milestone } = issue;
   const { selectedIssueIds, toggleIssueSelection } = useSelectedIssues();
 
   return (
@@ -24,15 +24,16 @@ function IssueRow({ issue }: IssueRowProps) {
         <div className="flex gap-1">
           <img src="/public/issue.svg" alt="이슈" />
           <span className="text-neutral-text-strong font-bold">{title}</span>
-          {labels.map(({ id, title, textColor, backgroundColor }) => (
+
+          {label && (
             <Label
-              textColor={textColor}
-              backgroundColor={backgroundColor}
+              textColor={label.textColor}
+              backgroundColor={label.backgroundColor}
               key={id}
             >
               {title}
             </Label>
-          ))}
+          )}
         </div>
 
         <div className="flex gap-4 text-neutral-text-weak">
