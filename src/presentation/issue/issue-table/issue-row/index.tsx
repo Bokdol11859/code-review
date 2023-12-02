@@ -11,7 +11,7 @@ interface IssueRowProps {
 }
 
 function IssueRow({ issue, selectIssue, selectedIssues }: IssueRowProps) {
-  const { id, title, createdAt, labels } = issue;
+  const { id, title, createdAt, labels, milestone } = issue;
 
   return (
     <Table.Row>
@@ -37,7 +37,13 @@ function IssueRow({ issue, selectIssue, selectedIssues }: IssueRowProps) {
 
         <div className="flex gap-4 text-neutral-text-weak">
           <span># {id}</span>
-          <span>{`${timeDiffFromNow(createdAt)} 전에 작성되었습니다.`}</span>
+          <span>{`${timeDiffFromNow(createdAt)} 전에 작성되었습니다`}</span>
+          {milestone && (
+            <div className="flex gap-2">
+              <img src="/public/milestone.svg" alt="마일스톤" />
+              <span>{milestone.title}</span>
+            </div>
+          )}
         </div>
       </div>
     </Table.Row>
