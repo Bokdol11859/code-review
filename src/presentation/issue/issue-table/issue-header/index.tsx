@@ -1,78 +1,38 @@
 import Button from '../../../../common-ui/button';
 import Checkbox from '../../../../common-ui/checkbox';
-import Menus from '../../../../common-ui/menus';
-import Table from '../../../../common-ui/table';
 import { Issue } from '../../../../domain/model/issue';
-import useLabels from '../../../label/use-labels';
-import useCloseIssues from '../../use-close-issues';
-import useOpenIssues from '../../use-open-issues';
+import { useSelectedIssues } from '../../SelectedIssuesContext';
+import LabelFilterMenu from './label-filter-menu';
+import MilestoneFilterMenu from './milestone-filter-menu';
+import StatusUpdateMenu from './status-update-menu';
 
 interface IssueHeaderProps {
   issues: Issue[] | undefined;
-  selectedIssues: Brand<number, Issue>[];
-  selectAllIssues: (ids: Brand<number, Issue>[]) => void;
 }
 
-function IssueHeader({
-  issues,
-  selectedIssues,
-  selectAllIssues,
-}: IssueHeaderProps) {
-  const { openIssues } = useOpenIssues();
-  const { closeIssues } = useCloseIssues();
-  const { labels } = useLabels();
+function IssueHeader({ issues }: IssueHeaderProps) {
+  const { selectedIssueIds, selectAllIssues } = useSelectedIssues();
 
-  function handleOpenIssues() {
-    openIssues(selectedIssues);
-    selectAllIssues([]);
-  }
-
-  function handleCloseIssues() {
-    closeIssues(selectedIssues);
-    selectAllIssues([]);
-  }
-
-  if (selectedIssues.length)
+  if (selectedIssueIds.length)
     return (
       <>
         <Checkbox
-          checked={Boolean(selectedIssues.length)}
+          checked={Boolean(selectedIssueIds.length)}
           onChange={() => selectAllIssues(issues?.map(({ id }) => id) ?? [])}
         />
 
         <span className="flex items-center font-bold text-neutral-text-weak">
-          {selectedIssues.length}개 이슈 선택
+          {selectedIssueIds.length}개 이슈 선택
         </span>
 
-        <Menus.OpenButton id="상태수정" windowPosition="right">
-          <Button variant="ghosts" size="M" flexible>
-            <span>상태 수정</span>
-            <img src="/public/chevron-down.svg" alt="상태 수정" />
-          </Button>
-        </Menus.OpenButton>
-
-        <Menus.Window id="상태수정">
-          <Table columns="1fr" size="S">
-            <Table.Header>상태 변경</Table.Header>
-            <Table.Row>
-              <Menus.Button onClick={handleOpenIssues}>
-                선택한 이슈 열기
-              </Menus.Button>
-            </Table.Row>
-            <Table.Row>
-              <Menus.Button onClick={handleCloseIssues}>
-                선택한 이슈 닫기
-              </Menus.Button>
-            </Table.Row>
-          </Table>
-        </Menus.Window>
+        <StatusUpdateMenu />
       </>
     );
 
   return (
     <>
       <Checkbox
-        checked={Boolean(selectedIssues.length)}
+        checked={Boolean(selectedIssueIds.length)}
         onChange={() => selectAllIssues(issues?.map(({ id }) => id) ?? [])}
       />
 
@@ -93,31 +53,9 @@ function IssueHeader({
           <img src="/public/chevron-down.svg" alt="이슈" />
         </Button>
 
-        <Menus.OpenButton id="레이블필터" windowPosition="center">
-          <Button variant="ghosts" size="M" flexible>
-            <span>레이블</span>
-            <img src="/public/chevron-down.svg" alt="이슈" />
-          </Button>
-        </Menus.OpenButton>
+        <LabelFilterMenu />
 
-        <Menus.Window id="레이블필터">
-          <Table columns="1fr" size="S">
-            <Table.Header>레이블 필터</Table.Header>
-            <Table.Row>
-              <Menus.Button>레이블이 없는 이슈</Menus.Button>
-            </Table.Row>
-            {labels?.map(({ id, title }) => (
-              <Table.Row key={id}>
-                <Menus.Button>{title}</Menus.Button>
-              </Table.Row>
-            ))}
-          </Table>
-        </Menus.Window>
-
-        <Button variant="ghosts" size="M" flexible>
-          <span>마일스톤</span>
-          <img src="/public/chevron-down.svg" alt="이슈" />
-        </Button>
+        <MilestoneFilterMenu />
 
         <Button variant="ghosts" size="M" flexible>
           <span>작성자</span>

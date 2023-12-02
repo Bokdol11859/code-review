@@ -3,21 +3,21 @@ import Label from '../../../../common-ui/label';
 import Table from '../../../../common-ui/table';
 import { Issue } from '../../../../domain/model/issue';
 import { timeDiffFromNow } from '../../../../utils/helpers';
+import { useSelectedIssues } from '../../SelectedIssuesContext';
 
 interface IssueRowProps {
   issue: Issue;
-  selectedIssues: Brand<number, Issue>[];
-  selectIssue: (id: Brand<number, Issue>) => void;
 }
 
-function IssueRow({ issue, selectIssue, selectedIssues }: IssueRowProps) {
+function IssueRow({ issue }: IssueRowProps) {
   const { id, title, createdAt, labels, milestone } = issue;
+  const { selectedIssueIds, toggleIssueSelection } = useSelectedIssues();
 
   return (
     <Table.Row>
       <Checkbox
-        checked={selectedIssues.includes(id)}
-        onChange={() => selectIssue(id)}
+        checked={selectedIssueIds.includes(id)}
+        onChange={() => toggleIssueSelection(id)}
       />
 
       <div className="flex flex-col gap-2">
