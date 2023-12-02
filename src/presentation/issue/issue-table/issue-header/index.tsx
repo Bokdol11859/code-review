@@ -3,6 +3,7 @@ import Checkbox from '../../../../common-ui/checkbox';
 import Menus from '../../../../common-ui/menus';
 import Table from '../../../../common-ui/table';
 import { Issue } from '../../../../domain/model/issue';
+import useLabels from '../../../label/use-labels';
 import useCloseIssues from '../../use-close-issues';
 import useOpenIssues from '../../use-open-issues';
 
@@ -19,6 +20,7 @@ function IssueHeader({
 }: IssueHeaderProps) {
   const { openIssues } = useOpenIssues();
   const { closeIssues } = useCloseIssues();
+  const { labels } = useLabels();
 
   function handleOpenIssues() {
     openIssues(selectedIssues);
@@ -90,14 +92,33 @@ function IssueHeader({
           <span>담당자</span>
           <img src="/public/chevron-down.svg" alt="이슈" />
         </Button>
-        <Button variant="ghosts" size="M" flexible>
-          <span>레이블</span>
-          <img src="/public/chevron-down.svg" alt="이슈" />
-        </Button>
+
+        <Menus.OpenButton id="레이블필터" windowPosition="center">
+          <Button variant="ghosts" size="M" flexible>
+            <span>레이블</span>
+            <img src="/public/chevron-down.svg" alt="이슈" />
+          </Button>
+        </Menus.OpenButton>
+
+        <Menus.Window id="레이블필터">
+          <Table columns="1fr" size="S">
+            <Table.Header>레이블 필터</Table.Header>
+            <Table.Row>
+              <Menus.Button>레이블이 없는 이슈</Menus.Button>
+            </Table.Row>
+            {labels?.map(({ title }) => (
+              <Table.Row>
+                <Menus.Button>{title}</Menus.Button>
+              </Table.Row>
+            ))}
+          </Table>
+        </Menus.Window>
+
         <Button variant="ghosts" size="M" flexible>
           <span>마일스톤</span>
           <img src="/public/chevron-down.svg" alt="이슈" />
         </Button>
+
         <Button variant="ghosts" size="M" flexible>
           <span>작성자</span>
           <img src="/public/chevron-down.svg" alt="이슈" />
