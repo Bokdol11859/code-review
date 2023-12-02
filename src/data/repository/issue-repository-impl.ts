@@ -22,13 +22,12 @@ export class IssueRepositoryImpl implements IssueRepository {
 
   private mapEntityToModel(data: IssueAPIEntity[]): Issue[] {
     return data.map(
-      ({ id, title, created_at, is_open, contents, labels, milestones }) => {
+      ({ id, title, created_at, is_open, labels, milestones }) => {
         return {
           id: id as Brand<number, Issue>,
           title,
           isOpen: is_open,
           createdAt: new Date(created_at),
-          contents,
           labels: labels.map(({ id, title, text_color, background_color }) => {
             return {
               id,

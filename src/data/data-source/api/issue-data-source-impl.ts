@@ -7,7 +7,7 @@ export default class IssueDataSourceImpl implements IssueDataSource {
     const { data, error } = await supabase
       .from('issues')
       .select(
-        'id, title, contents, is_open, created_at, labels(id, title, text_color, background_color), milestones(id, title)'
+        'id, title, is_open, created_at, labels(id, title, text_color, background_color), milestones(id, title)'
       );
 
     if (error) {
