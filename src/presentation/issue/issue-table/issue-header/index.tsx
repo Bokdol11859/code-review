@@ -106,8 +106,8 @@ function IssueHeader({
             <Table.Row>
               <Menus.Button>레이블이 없는 이슈</Menus.Button>
             </Table.Row>
-            {labels?.map(({ title }) => (
-              <Table.Row>
+            {labels?.map(({ id, title }) => (
+              <Table.Row key={id}>
                 <Menus.Button>{title}</Menus.Button>
               </Table.Row>
             ))}
