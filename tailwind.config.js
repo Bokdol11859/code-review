@@ -29,6 +29,7 @@ module.exports = {
       regular: '11px',
       midium: '14px',
       large: '16px',
+      full: '9999px',
     },
     fontSize: {
       S: ['12px', '20px'],
