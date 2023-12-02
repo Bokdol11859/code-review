@@ -7,6 +7,9 @@ export interface Issue {
   contents: string | null;
   isOpen: boolean;
   createdAt: Date;
-  labels: Label[];
+  labels: Pick<
+    Label,
+    'id' | 'title' | 'description' | 'textColor' | 'backgroundColor'
+  >[];
   milestone: MileStone | null;
 }
