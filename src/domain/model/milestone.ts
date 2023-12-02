@@ -1,8 +1,8 @@
-export interface MileStone {
+export interface Milestone {
   id: number;
   title: string;
-  description: string;
-  dueDate: Date;
+  description: string | null;
+  dueDate: Date | null;
   isOpen: boolean;
   createdAt: Date;
 }
