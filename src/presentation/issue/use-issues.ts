@@ -17,11 +17,18 @@ export default function useIssues() {
   const filterOptions: IssueFilterOptions = {};
 
   const labelTitle = searchParams.get('label');
+  const milestoneTitle = searchParams.get('milestone');
 
   if (labelTitle)
     filterOptions.label = {
       property: 'title',
       value: labelTitle,
+    };
+
+  if (milestoneTitle)
+    filterOptions.milestone = {
+      property: 'title',
+      value: milestoneTitle,
     };
 
   const {

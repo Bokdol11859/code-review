@@ -5,23 +5,29 @@ import supabase from './supabase-db/supabase';
 
 export default class IssueDataSourceImpl implements IssueDataSource {
   async getIssues(filterOptions: IssueFilterOptions) {
-    const { label } = filterOptions;
+    const { label, milestone } = filterOptions;
 
-    let inner = '';
-    if (label && label.value !== 'none') inner = '!inner';
+    const labelInner = label && label.value !== 'none' ? '!inner' : '';
+
+    const milestoneInner =
+      milestone && milestone.value !== 'none' ? '!inner' : '';
 
     let query = supabase
       .from('issues')
       .select(
-        `id, title, is_open, created_at, labels${inner}(id, title, text_color, background_color), milestones(id, title)`
+        `id, title, is_open, created_at, labels${labelInner}(id, title, text_color, background_color), milestones${milestoneInner}(id, title)`
       );
 
     if (label) {
       if (label.value !== 'none')
         query = query.eq(`labels.${label.property}`, label.value);
-      else {
-        query = query.is(`labels`, null);
-      }
+      else query = query.is(`labels`, null);
+    }
+
+    if (milestone) {
+      if (milestone.value !== 'none')
+        query = query.eq(`milestones.${milestone.property}`, milestone.value);
+      else query = query.is('milestones', null);
     }
 
     const { data, error } = await query;
