@@ -6,7 +6,7 @@ function AppLayout() {
     <div className="px-20">
       <Header />
 
-      <main className="py-8">
+      <main className="flex flex-col gap-6 py-8">
         <Outlet />
       </main>
     </div>
