@@ -1,15 +1,20 @@
-import { Tables } from '../supabase-db/database.types';
+interface LabelInfo {
+  id: number;
+  title: string;
+  text_color: string;
+  background_color: string;
+}
 
-interface LabelInfo
-  extends Pick<
-    Tables<'labels'>,
-    'id' | 'title' | 'text_color' | 'background_color'
-  > {}
+interface MilestoneInfo {
+  id: number;
+  title: string;
+}
 
-interface MilestoneInfo extends Pick<Tables<'milestones'>, 'id' | 'title'> {}
-
-export interface IssueAPIEntity
-  extends Omit<Tables<'issues'>, 'label_id' | 'milestone_id' | 'contents'> {
+export interface IssueAPIEntity {
+  id: number;
+  title: string;
+  is_open: boolean;
+  created_at: string;
   labels: LabelInfo | null;
   milestones: MilestoneInfo | null;
 }
