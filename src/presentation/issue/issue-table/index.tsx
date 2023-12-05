@@ -6,14 +6,18 @@ import Menus from '../../../common-ui/menus';
 import { SelectedIssuesProvider } from '../SelectedIssuesContext';
 
 function IssueTable() {
-  const { issues } = useIssues();
+  const { issues, openIssueCount, closeIssueCount } = useIssues();
 
   return (
     <SelectedIssuesProvider>
       <Menus>
         <Table columns="1rem 1fr auto" size="L">
           <Table.Header>
-            <IssueHeader issues={issues} />
+            <IssueHeader
+              issues={issues}
+              openIssueCount={openIssueCount}
+              closeIssueCount={closeIssueCount}
+            />
           </Table.Header>
           <Table.Body
             data={issues}

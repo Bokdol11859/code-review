@@ -6,10 +6,15 @@ import IssueDataSource from '../data-source/issue-data-source';
 export class IssueRepositoryImpl implements IssueRepository {
   constructor(private datasource: IssueDataSource) {}
 
-  async getIssues(filterOptions: IssueFilterOptions): Promise<Issue[]> {
-    const data = await this.datasource.getIssues(filterOptions);
+  async getIssues(filterOptions: IssueFilterOptions): Promise<{
+    data: Issue[];
+    openIssueCount: number;
+    closeIssueCount: number;
+  }> {
+    const { data, openIssueCount, closeIssueCount } =
+      await this.datasource.getIssues(filterOptions);
 
-    return this.mapEntityToModel(data);
+    return this.mapEntityToModel({ data, openIssueCount, closeIssueCount });
   }
 
   async openIssues(ids: Brand<number, Issue>[]) {
@@ -20,27 +25,37 @@ export class IssueRepositoryImpl implements IssueRepository {
     return this.datasource.closeIssues(ids);
   }
 
-  private mapEntityToModel(data: IssueAPIEntity[]): Issue[] {
-    return data.map(
-      ({ id, title, created_at, is_open, labels, milestones }) => {
-        return {
-          id: id as Brand<number, Issue>,
-          title,
-          isOpen: is_open,
-          createdAt: new Date(created_at),
-          label: labels
-            ? {
-                id: labels.id,
-                title: labels.title,
-                textColor: labels.text_color,
-                backgroundColor: labels.background_color,
-              }
-            : null,
-          milestone: milestones
-            ? { id: milestones.id, title: milestones.title }
-            : null,
-        };
-      }
-    );
+  private mapEntityToModel(entity: IssueAPIEntity): {
+    data: Issue[];
+    openIssueCount: number;
+    closeIssueCount: number;
+  } {
+    const { data, openIssueCount, closeIssueCount } = entity;
+
+    return {
+      data: data.map(
+        ({ id, title, created_at, is_open, labels, milestones }) => {
+          return {
+            id: id as Brand<number, Issue>,
+            title,
+            isOpen: is_open,
+            createdAt: new Date(created_at),
+            label: labels
+              ? {
+                  id: labels.id,
+                  title: labels.title,
+                  textColor: labels.text_color,
+                  backgroundColor: labels.background_color,
+                }
+              : null,
+            milestone: milestones
+              ? { id: milestones.id, title: milestones.title }
+              : null,
+          };
+        }
+      ),
+      openIssueCount,
+      closeIssueCount,
+    };
   }
 }

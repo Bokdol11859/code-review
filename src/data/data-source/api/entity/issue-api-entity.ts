@@ -11,10 +11,14 @@ interface MilestoneInfo {
 }
 
 export interface IssueAPIEntity {
-  id: number;
-  title: string;
-  is_open: boolean;
-  created_at: string;
-  labels: LabelInfo | null;
-  milestones: MilestoneInfo | null;
+  data: {
+    id: number;
+    title: string;
+    is_open: boolean;
+    created_at: string;
+    labels: LabelInfo | null;
+    milestones: MilestoneInfo | null;
+  }[];
+  openIssueCount: number;
+  closeIssueCount: number;
 }

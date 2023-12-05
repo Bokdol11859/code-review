@@ -15,6 +15,7 @@ export interface IssueFilterOption<T, K extends keyof T> {
   value: T[K];
 }
 export interface IssueFilterOptions {
+  isOpen?: boolean;
   label?: IssueFilterOption<Label, 'title'>;
   milestone?: IssueFilterOption<Milestone, 'title'>;
 }

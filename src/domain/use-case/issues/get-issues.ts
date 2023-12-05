@@ -2,7 +2,13 @@ import { Issue, IssueFilterOptions } from '../../model/issue';
 import { IssueRepository } from '../../repository/issue-repository';
 
 export interface GetIssuesUseCase {
-  invoke: (filterOptions: IssueFilterOptions) => Promise<Issue[]>;
+  invoke: (
+    filterOptions: IssueFilterOptions
+  ) => Promise<{
+    data: Issue[];
+    openIssueCount: number | null;
+    closeIssueCount: number | null;
+  }>;
 }
 
 export class GetIssues implements GetIssuesUseCase {

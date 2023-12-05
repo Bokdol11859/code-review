@@ -16,24 +16,28 @@ export default function useIssues() {
 
   const filterOptions: IssueFilterOptions = {};
 
-  const labelTitle = searchParams.get('label');
-  const milestoneTitle = searchParams.get('milestone');
+  const isOpenFilterOption = searchParams.get('isOpen');
+  const labelFilterOption = searchParams.get('label');
+  const milestoneFilterOption = searchParams.get('milestone');
 
-  if (labelTitle)
+  if (isOpenFilterOption === 'close') filterOptions.isOpen = false;
+  else filterOptions.isOpen = true;
+
+  if (labelFilterOption)
     filterOptions.label = {
       property: 'title',
-      value: labelTitle,
+      value: labelFilterOption,
     };
 
-  if (milestoneTitle)
+  if (milestoneFilterOption)
     filterOptions.milestone = {
       property: 'title',
-      value: milestoneTitle,
+      value: milestoneFilterOption,
     };
 
   const {
     isLoading,
-    data: issues,
+    data: { data: issues, openIssueCount, closeIssueCount } = {},
     error,
   } = useQuery({
     queryKey: ['issues', filterOptions],
@@ -43,6 +47,8 @@ export default function useIssues() {
   return {
     isLoading,
     issues,
+    openIssueCount,
+    closeIssueCount,
     error,
   };
 }

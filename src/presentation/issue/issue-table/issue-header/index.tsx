@@ -4,21 +4,29 @@ import { Issue } from '../../../../domain/model/issue';
 import { useSelectedIssues } from '../../SelectedIssuesContext';
 import LabelFilterMenu from './label-filter-menu';
 import MilestoneFilterMenu from './milestone-filter-menu';
+import StatusFilterButtons from './status-filter-buttons';
 import StatusUpdateMenu from './status-update-menu';
 
 interface IssueHeaderProps {
   issues: Issue[] | undefined;
+  openIssueCount: number | undefined;
+  closeIssueCount: number | undefined;
 }
 
-function IssueHeader({ issues }: IssueHeaderProps) {
-  const { selectedIssueIds, selectAllIssues } = useSelectedIssues();
+function IssueHeader({
+  issues,
+  openIssueCount,
+  closeIssueCount,
+}: IssueHeaderProps) {
+  const { selectedIssueIds, selectAllIssues, deselectAllIssues } =
+    useSelectedIssues();
 
   if (selectedIssueIds.length)
     return (
       <>
         <Checkbox
           checked={Boolean(selectedIssueIds.length)}
-          onChange={() => selectAllIssues(issues?.map(({ id }) => id) ?? [])}
+          onChange={() => deselectAllIssues()}
         />
 
         <span className="flex items-center font-bold text-neutral-text-weak">
@@ -36,16 +44,10 @@ function IssueHeader({ issues }: IssueHeaderProps) {
         onChange={() => selectAllIssues(issues?.map(({ id }) => id) ?? [])}
       />
 
-      <div className="flex gap-6">
-        <Button variant="ghosts" size="M" flexible active>
-          <img src="/public/opened-issue.svg" alt="열린 이슈" />
-          <span>열린 이슈(2)</span>
-        </Button>
-        <Button variant="ghosts" size="M" flexible>
-          <img src="/public/closed-issue.svg" alt="닫힌 이슈" />
-          <span>닫힌 이슈(0)</span>
-        </Button>
-      </div>
+      <StatusFilterButtons
+        openIssueCount={openIssueCount}
+        closeIssueCount={closeIssueCount}
+      />
 
       <div className="flex gap-8 ">
         <Button variant="ghosts" size="M" flexible>
