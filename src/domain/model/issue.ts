@@ -9,3 +9,12 @@ export interface Issue {
   label: Pick<Label, 'id' | 'title' | 'textColor' | 'backgroundColor'> | null;
   milestone: Pick<Milestone, 'id' | 'title'> | null;
 }
+
+export interface IssueFilterOption<T, K extends keyof T> {
+  property: K;
+  value: T[K];
+}
+export interface IssueFilterOptions {
+  label?: IssueFilterOption<Label, 'title'>;
+  milestone?: IssueFilterOption<Milestone, 'title'>;
+}

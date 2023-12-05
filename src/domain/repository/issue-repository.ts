@@ -1,7 +1,7 @@
-import { Issue } from '../model/issue';
+import { Issue, IssueFilterOptions } from '../model/issue';
 
 export interface IssueRepository {
-  getIssues(): Promise<Issue[]>;
+  getIssues(filterOptions: IssueFilterOptions): Promise<Issue[]>;
   openIssues(ids: Brand<number, Issue>[]): Promise<void>;
   closeIssues(ids: Brand<number, Issue>[]): Promise<void>;
 }

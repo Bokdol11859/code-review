@@ -1,4 +1,4 @@
-import { Issue } from '../../domain/model/issue';
+import { Issue, IssueFilterOptions } from '../../domain/model/issue';
 import { IssueRepository } from '../../domain/repository/issue-repository';
 import { IssueAPIEntity } from '../data-source/api/entity/issue-api-entity';
 import IssueDataSource from '../data-source/issue-data-source';
@@ -6,8 +6,8 @@ import IssueDataSource from '../data-source/issue-data-source';
 export class IssueRepositoryImpl implements IssueRepository {
   constructor(private datasource: IssueDataSource) {}
 
-  async getIssues() {
-    const data = await this.datasource.getIssues();
+  async getIssues(filterOptions: IssueFilterOptions): Promise<Issue[]> {
+    const data = await this.datasource.getIssues(filterOptions);
 
     return this.mapEntityToModel(data);
   }

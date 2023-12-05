@@ -1,8 +1,8 @@
-import { Issue } from '../../model/issue';
+import { Issue, IssueFilterOptions } from '../../model/issue';
 import { IssueRepository } from '../../repository/issue-repository';
 
 export interface GetIssuesUseCase {
-  invoke: () => Promise<Issue[]>;
+  invoke: (filterOptions: IssueFilterOptions) => Promise<Issue[]>;
 }
 
 export class GetIssues implements GetIssuesUseCase {
@@ -11,7 +11,7 @@ export class GetIssues implements GetIssuesUseCase {
     this.issueRepo = _issueRepo;
   }
 
-  async invoke() {
-    return this.issueRepo.getIssues();
+  async invoke(filterOptions: IssueFilterOptions) {
+    return this.issueRepo.getIssues(filterOptions);
   }
 }
