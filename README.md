@@ -36,3 +36,5 @@ Pull Request를 받은 후, 제가 직접 코드를 검토하고 피드백을 �
 - TailwindCSS / EmotionCSS
 
 많은 분들의 참여를 기다립니다. 힘든 시간 이겨내며 함께 성장해 나가요! 
+
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FBokdol11859%2Fcode-review&count_bg=%234288D3&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=%E3%85%A4&edge_flat=true)](https://hits.seeyoufarm.com)
