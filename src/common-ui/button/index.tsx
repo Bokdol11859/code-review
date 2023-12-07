@@ -33,12 +33,13 @@ function Button({
 }: ButtonProps) {
   return (
     <button
+      {...rest}
       className={
         [base, variants[variant], sizes[size]].join(' ') +
-        `${flexible ? ' flex w-fit h-fit' : ''}` +
-        `${active ? ' text-neutral-text-strong' : ''}`
+        `${flexible ? ' flex w-fit h-fit ' : ''}` +
+        `${active ? ' text-neutral-text-strong ' : ''}` +
+        rest.className
       }
-      {...rest}
     >
       {children}
     </button>
