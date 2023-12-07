@@ -4,21 +4,12 @@ import Menus from '../../../../../common-ui/menus';
 import Table from '../../../../../common-ui/table';
 import useMilestones from '../../../../milestone/use-milestones';
 import RadioButton from '../../../../../common-ui/radio-button';
-import { Milestone } from '../../../../../domain/model/milestone';
+import useSearchParamsHandlers from '../../../use-search-params-handlers';
 
 function MilestoneFilterMenu() {
   const { milestones } = useMilestones();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  function handleClick(value: Milestone['title']) {
-    if (searchParams.get('milestone') === value) {
-      searchParams.delete('milestone');
-      setSearchParams(searchParams);
-      return;
-    }
-    searchParams.set('milestone', value);
-    setSearchParams(searchParams);
-  }
+  const [searchParams] = useSearchParams();
+  const { setMilestoneSearchParam } = useSearchParamsHandlers();
 
   return (
     <>
@@ -34,7 +25,7 @@ function MilestoneFilterMenu() {
           <Table.Header>마일스톤 필터</Table.Header>
 
           <Table.Row>
-            <Menus.Button onClick={() => handleClick('none')}>
+            <Menus.Button onClick={() => setMilestoneSearchParam('none')}>
               <div className="flex gap-2 items-center">
                 <span className="grow">마일스톤이 없는 이슈</span>
                 <RadioButton
@@ -46,7 +37,7 @@ function MilestoneFilterMenu() {
 
           {milestones?.map(({ id, title }) => (
             <Table.Row key={id}>
-              <Menus.Button onClick={() => handleClick(title)}>
+              <Menus.Button onClick={() => setMilestoneSearchParam(title)}>
                 <div className="flex gap-2 items-center">
                   <span className="grow">{title}</span>
                   <RadioButton

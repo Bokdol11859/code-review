@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import Button from '../../../../../common-ui/button';
+import useSearchParamsHandlers from '../../../use-search-params-handlers';
 
 interface StatusFilterButtonsProps {
   openIssueCount: number | undefined;
@@ -10,16 +11,8 @@ function StatusFilterButtons({
   openIssueCount = 0,
   closeIssueCount = 0,
 }: StatusFilterButtonsProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  function handleClickOpenIssue() {
-    searchParams.set('isOpen', 'open');
-    setSearchParams(searchParams);
-  }
-
-  function handleClickCloseIssue() {
-    searchParams.set('isOpen', 'close');
-    setSearchParams(searchParams);
-  }
+  const [searchParams] = useSearchParams();
+  const { setOpenStatusSearchParam } = useSearchParamsHandlers();
 
   return (
     <div className="flex gap-6">
@@ -27,7 +20,7 @@ function StatusFilterButtons({
         variant="ghosts"
         size="M"
         flexible
-        onClick={() => handleClickOpenIssue()}
+        onClick={() => setOpenStatusSearchParam(true)}
         active={
           !searchParams.get('isOpen') || searchParams.get('isOpen') === 'open'
         }
@@ -39,7 +32,7 @@ function StatusFilterButtons({
         variant="ghosts"
         size="M"
         flexible
-        onClick={() => handleClickCloseIssue()}
+        onClick={() => setOpenStatusSearchParam(false)}
         active={searchParams.get('isOpen') === 'close'}
       >
         <img src="/public/closed-issue.svg" alt="닫힌 이슈" />

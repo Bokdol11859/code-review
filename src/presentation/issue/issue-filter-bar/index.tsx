@@ -5,9 +5,11 @@ import Menus from '../../../common-ui/menus';
 import Table from '../../../common-ui/table';
 import useSearchParamsPlaceholder from './use-search-params-placeholder';
 import RadioButton from '../../../common-ui/radio-button';
+import useSearchParamsHandlers from '../use-search-params-handlers';
 
 function IssueFilterBar() {
   const [searchParams] = useSearchParams();
+  const { setOpenStatusSearchParam } = useSearchParamsHandlers();
   const placeholder = useSearchParamsPlaceholder();
 
   return (
@@ -31,18 +33,18 @@ function IssueFilterBar() {
               <Table.Header>이슈 필터</Table.Header>
 
               <Table.Row>
-                <Menus.Button>
+                <Menus.Button onClick={() => setOpenStatusSearchParam(true)}>
                   <div className="flex gap-2 items-center">
                     <span className="grow">열린 이슈</span>
                     <RadioButton
-                      checked={searchParams.get('isOpen') !== 'close'}
+                      checked={searchParams.get('isOpen') === 'open'}
                     />
                   </div>
                 </Menus.Button>
               </Table.Row>
 
               <Table.Row>
-                <Menus.Button>
+                <Menus.Button onClick={() => setOpenStatusSearchParam(false)}>
                   <div className="flex gap-2 items-center">
                     <span className="grow">닫힌 이슈</span>
                     <RadioButton

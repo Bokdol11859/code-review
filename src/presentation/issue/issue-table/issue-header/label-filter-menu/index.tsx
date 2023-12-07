@@ -5,21 +5,12 @@ import Menus from '../../../../../common-ui/menus';
 import RadioButton from '../../../../../common-ui/radio-button';
 import Table from '../../../../../common-ui/table';
 import useLabels from '../../../../label/use-labels';
-import { Label } from '../../../../../domain/model/label';
+import useSearchParamsHandlers from '../../../use-search-params-handlers';
 
 function LabelFilterMenu() {
   const { labels } = useLabels();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  function handleClick(value: Label['title']) {
-    if (searchParams.get('label') === value) {
-      searchParams.delete('label');
-      setSearchParams(searchParams);
-      return;
-    }
-    searchParams.set('label', value);
-    setSearchParams(searchParams);
-  }
+  const [searchParams] = useSearchParams();
+  const { setLabelSearchParam } = useSearchParamsHandlers();
 
   return (
     <>
@@ -35,7 +26,7 @@ function LabelFilterMenu() {
           <Table.Header>레이블 필터</Table.Header>
 
           <Table.Row>
-            <Menus.Button onClick={() => handleClick('none')}>
+            <Menus.Button onClick={() => setLabelSearchParam('none')}>
               <div className="flex gap-2 items-center">
                 <span className="grow">레이블이 없는 이슈</span>
                 <RadioButton checked={searchParams.get('label') === 'none'} />
@@ -45,7 +36,7 @@ function LabelFilterMenu() {
 
           {labels?.map(({ id, title, backgroundColor }) => (
             <Table.Row key={id}>
-              <Menus.Button onClick={() => handleClick(title)}>
+              <Menus.Button onClick={() => setLabelSearchParam(title)}>
                 <div className="flex gap-2 items-center">
                   <LabelIcon backgroundColor={backgroundColor} />
                   <span className="grow">{title}</span>
