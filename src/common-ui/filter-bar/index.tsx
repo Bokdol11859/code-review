@@ -3,8 +3,9 @@ import {
   createContext,
   useContext,
   useState,
-  ComponentPropsWithoutRef,
+  ComponentProps,
   ChangeEvent,
+  forwardRef,
 } from 'react';
 
 interface FilterContextType {
@@ -23,7 +24,7 @@ interface SearchFilterProps {
   children: ReactNode;
 }
 
-interface InputProps extends ComponentPropsWithoutRef<'input'> {}
+interface InputProps extends ComponentProps<'input'> {}
 
 function FilterBar({ children }: FilterBarProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -63,15 +64,20 @@ function Divider() {
   return <div className="bg-neutral-border w-px h-full" />;
 }
 
-function Input({ ...rest }: InputProps) {
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { isFocused, focus, blur } = useContext(FilterBarContext);
   const [inputValue, setInputValue] = useState('');
 
   function handleFocus() {
-    if (!inputValue && rest.placeholder) {
-      setInputValue(rest.placeholder);
+    if (!inputValue && props.placeholder) {
+      setInputValue(props.placeholder);
     }
     focus();
+  }
+
+  function handleBlur() {
+    blur();
+    setInputValue('');
   }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -89,8 +95,8 @@ function Input({ ...rest }: InputProps) {
       <img src="/public/search.svg" alt="검색" className="w-4 h-4" />
       <input
         type="text"
-        onFocus={() => handleFocus()}
-        onBlur={() => blur()}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         value={inputValue}
         onChange={handleChange}
         className={`w-[400px] h-full focus:outline-none bg-inherit placeholder:text-neutral-text-weak ${
@@ -98,12 +104,12 @@ function Input({ ...rest }: InputProps) {
             ? 'bg-neutral-background-strong text-neutral-text-strong'
             : 'bg-neutral-background-bold text-neutral-text-weak'
         }`}
-        {...rest}
+        ref={ref}
+        {...props}
       />
     </div>
   );
-}
-
+});
 FilterBar.SearchFilter = SearchFilter;
 FilterBar.Divider = Divider;
 FilterBar.Input = Input;
