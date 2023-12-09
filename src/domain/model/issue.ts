@@ -18,4 +18,5 @@ export interface IssueFilterOptions {
   isOpen?: boolean;
   label?: IssueFilterOption<Label, 'title'>;
   milestone?: IssueFilterOption<Milestone, 'title'>;
+  likes?: string[];
 }

@@ -19,8 +19,8 @@ export default class IssueDataSourceImpl implements IssueDataSource {
 
     query = this.applyFilterOptions(query, filterOptions);
 
-    if (isOpen) query = query.eq('is_open', true);
-    else query = query.eq('is_open', false);
+    if (isOpen === true) query = query.eq('is_open', true);
+    if (isOpen === false) query = query.eq('is_open', false);
 
     let openIssueCountQuery = supabase
       .from('issues')
@@ -98,7 +98,7 @@ export default class IssueDataSourceImpl implements IssueDataSource {
   }
 
   private applyFilterOptions(query: any, filterOptions: IssueFilterOptions) {
-    const { label, milestone } = filterOptions;
+    const { label, milestone, likes } = filterOptions;
 
     if (label) {
       if (label.value !== 'none')
@@ -110,6 +110,22 @@ export default class IssueDataSourceImpl implements IssueDataSource {
       if (milestone.value !== 'none')
         query = query.eq(`milestones.${milestone.property}`, milestone.value);
       else query = query.is('milestones', null);
+    }
+
+    if (likes?.length) {
+      const likesFilterColumns = ['contents', 'title'];
+
+      const likesFilterQuery = likesFilterColumns
+        .map((likesFilterColumn) => {
+          const andQuery = likes
+            .map((like) => `${likesFilterColumn}.ilike.%${like}%`)
+            .join(',');
+
+          return `and(${andQuery})`;
+        })
+        .join(', ');
+
+      query = query.or(likesFilterQuery);
     }
 
     return query;
