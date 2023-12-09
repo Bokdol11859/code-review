@@ -18,9 +18,9 @@ const variants = {
 };
 
 const sizes = {
-  S: 'w-[120px] h-10 text-S font-bold rounded-regular',
-  M: 'w-40 h-10 text-M font-bold rounded-medium',
-  L: 'w-60 h-14 text-L font-bold rounded-large',
+  S: 'w-[120px] h-10 text-S font-bold rounded-regular ',
+  M: 'w-40 h-10 text-M font-bold rounded-medium ',
+  L: 'w-60 h-14 text-L font-bold rounded-large ',
 };
 
 function Button({
