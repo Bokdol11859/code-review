@@ -1,10 +1,10 @@
-import { useSearchParams } from 'react-router-dom';
 import IssueDataSourceImpl from '../../data/data-source/api/issue-data-source-impl';
 import { IssueRepositoryImpl } from '../../data/repository/issue-repository-impl';
 
 import { GetIssues } from '../../domain/use-case/issues/get-issues';
 import { useQuery } from '@tanstack/react-query';
 import { IssueFilterOptions } from '../../domain/model/issue';
+import useSearchParamsHandlers from './use-search-params-handlers';
 
 export default function useIssues() {
   const issuesDataSourceImpl = new IssueDataSourceImpl();
@@ -12,28 +12,35 @@ export default function useIssues() {
 
   const getIssuesUseCase = new GetIssues(issuesRepositoryImpl);
 
-  const [searchParams] = useSearchParams();
+  const {
+    isOpenStatus,
+    isCloseStatus,
+    getLabelSearchParam,
+    getMilestoneSearchParam,
+    getLikeSearchParams,
+  } = useSearchParamsHandlers();
 
   const filterOptions: IssueFilterOptions = {};
 
-  const isOpenFilterOption = searchParams.get('isOpen');
-  const labelFilterOption = searchParams.get('label');
-  const milestoneFilterOption = searchParams.get('milestone');
+  if (isCloseStatus) filterOptions.isOpen = false;
+  if (isOpenStatus) filterOptions.isOpen = true;
 
-  if (isOpenFilterOption === 'close') filterOptions.isOpen = false;
-  else filterOptions.isOpen = true;
-
-  if (labelFilterOption)
+  const labelSearchParam = getLabelSearchParam();
+  if (labelSearchParam)
     filterOptions.label = {
       property: 'title',
-      value: labelFilterOption,
+      value: labelSearchParam,
     };
 
-  if (milestoneFilterOption)
+  const milestoneSearchParam = getMilestoneSearchParam();
+  if (milestoneSearchParam)
     filterOptions.milestone = {
       property: 'title',
-      value: milestoneFilterOption,
+      value: milestoneSearchParam,
     };
+
+  const likeSearchParmas = getLikeSearchParams();
+  if (likeSearchParmas) filterOptions.likes = likeSearchParmas;
 
   const {
     isLoading,

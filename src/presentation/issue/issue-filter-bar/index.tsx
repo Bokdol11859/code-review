@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useRef } from 'react';
 import Button from '../../../common-ui/button';
 import FilterBar from '../../../common-ui/filter-bar';
 import Menus from '../../../common-ui/menus';
@@ -8,9 +8,21 @@ import RadioButton from '../../../common-ui/radio-button';
 import useSearchParamsHandlers from '../use-search-params-handlers';
 
 function IssueFilterBar() {
-  const [searchParams] = useSearchParams();
-  const { setOpenStatusSearchParam } = useSearchParamsHandlers();
+  const {
+    setOpenStatusSearchParam,
+    applySearchQuery,
+    isOpenStatus,
+    isCloseStatus,
+  } = useSearchParamsHandlers();
   const placeholder = useSearchParamsPlaceholder();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key !== 'Enter') return;
+
+    applySearchQuery((e.target as HTMLInputElement).value);
+    inputRef.current?.blur();
+  }
 
   return (
     <FilterBar>
@@ -36,9 +48,7 @@ function IssueFilterBar() {
                 <Menus.Button onClick={() => setOpenStatusSearchParam(true)}>
                   <div className="flex gap-2 items-center">
                     <span className="grow">열린 이슈</span>
-                    <RadioButton
-                      checked={searchParams.get('isOpen') === 'open'}
-                    />
+                    <RadioButton checked={isOpenStatus} />
                   </div>
                 </Menus.Button>
               </Table.Row>
@@ -47,9 +57,7 @@ function IssueFilterBar() {
                 <Menus.Button onClick={() => setOpenStatusSearchParam(false)}>
                   <div className="flex gap-2 items-center">
                     <span className="grow">닫힌 이슈</span>
-                    <RadioButton
-                      checked={searchParams.get('isOpen') === 'close'}
-                    />
+                    <RadioButton checked={isCloseStatus} />
                   </div>
                 </Menus.Button>
               </Table.Row>
@@ -60,7 +68,11 @@ function IssueFilterBar() {
 
       <FilterBar.Divider />
 
-      <FilterBar.Input placeholder={placeholder} />
+      <FilterBar.Input
+        placeholder={placeholder}
+        onKeyDown={handleKeyDown}
+        ref={inputRef}
+      />
     </FilterBar>
   );
 }

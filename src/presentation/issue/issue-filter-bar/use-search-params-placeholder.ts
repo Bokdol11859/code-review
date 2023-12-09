@@ -1,29 +1,40 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import useSearchParamsHandlers from '../use-search-params-handlers';
 
 function useSearchParamsPlaceholder() {
-  const [searchParams] = useSearchParams();
   const [placeholder, setPlaceholder] = useState('');
+  const {
+    isCloseStatus,
+    isOpenStatus,
+    getLabelSearchParam,
+    getMilestoneSearchParam,
+    getLikeSearchParams,
+  } = useSearchParamsHandlers();
 
   useEffect(() => {
     let newPlaceholder = '';
 
-    if (searchParams.get('isOpen') === 'close') {
-      newPlaceholder += `isOpen:close `;
-    } else {
-      newPlaceholder += `isOpen:open `;
-    }
+    if (isCloseStatus) newPlaceholder += `isOpen:close `;
+    if (isOpenStatus) newPlaceholder += `isOpen:open `;
 
-    if (searchParams.get('label')) {
-      newPlaceholder += `label:${searchParams.get('label')} `;
-    }
+    const labelSearchParam = getLabelSearchParam();
+    if (labelSearchParam) newPlaceholder += `label:${labelSearchParam} `;
 
-    if (searchParams.get('milestone')) {
-      newPlaceholder += `milestone:${searchParams.get('milestone')} `;
-    }
+    const milestoneSearchParam = getMilestoneSearchParam();
+    if (milestoneSearchParam)
+      newPlaceholder += `milestone:${milestoneSearchParam} `;
+
+    const likeSearchParmas = getLikeSearchParams();
+    if (likeSearchParmas) newPlaceholder += likeSearchParmas.join(' ');
 
     setPlaceholder(newPlaceholder);
-  }, [searchParams]);
+  }, [
+    isOpenStatus,
+    isCloseStatus,
+    getLabelSearchParam,
+    getMilestoneSearchParam,
+    getLikeSearchParams,
+  ]);
 
   return placeholder;
 }

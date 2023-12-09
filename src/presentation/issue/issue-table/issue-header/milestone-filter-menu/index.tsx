@@ -1,4 +1,3 @@
-import { useSearchParams } from 'react-router-dom';
 import Button from '../../../../../common-ui/button';
 import Menus from '../../../../../common-ui/menus';
 import Table from '../../../../../common-ui/table';
@@ -8,8 +7,11 @@ import useSearchParamsHandlers from '../../../use-search-params-handlers';
 
 function MilestoneFilterMenu() {
   const { milestones } = useMilestones();
-  const [searchParams] = useSearchParams();
-  const { setMilestoneSearchParam } = useSearchParamsHandlers();
+  const {
+    setMilestoneSearchParam,
+    getMilestoneSearchParam,
+    isNotWithMilestone,
+  } = useSearchParamsHandlers();
 
   return (
     <>
@@ -28,9 +30,7 @@ function MilestoneFilterMenu() {
             <Menus.Button onClick={() => setMilestoneSearchParam('none')}>
               <div className="flex gap-2 items-center">
                 <span className="grow">마일스톤이 없는 이슈</span>
-                <RadioButton
-                  checked={searchParams.get('milestone') === 'none'}
-                />
+                <RadioButton checked={isNotWithMilestone} />
               </div>
             </Menus.Button>
           </Table.Row>
@@ -40,9 +40,7 @@ function MilestoneFilterMenu() {
               <Menus.Button onClick={() => setMilestoneSearchParam(title)}>
                 <div className="flex gap-2 items-center">
                   <span className="grow">{title}</span>
-                  <RadioButton
-                    checked={searchParams.get('milestone') === title}
-                  />
+                  <RadioButton checked={getMilestoneSearchParam() === title} />
                 </div>
               </Menus.Button>
             </Table.Row>

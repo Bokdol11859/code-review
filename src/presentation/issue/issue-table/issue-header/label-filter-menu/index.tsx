@@ -1,4 +1,3 @@
-import { useSearchParams } from 'react-router-dom';
 import Button from '../../../../../common-ui/button';
 import LabelIcon from '../../../../../common-ui/label-icon';
 import Menus from '../../../../../common-ui/menus';
@@ -9,8 +8,9 @@ import useSearchParamsHandlers from '../../../use-search-params-handlers';
 
 function LabelFilterMenu() {
   const { labels } = useLabels();
-  const [searchParams] = useSearchParams();
-  const { setLabelSearchParam } = useSearchParamsHandlers();
+
+  const { setLabelSearchParam, isUnLabeld, getLabelSearchParam } =
+    useSearchParamsHandlers();
 
   return (
     <>
@@ -29,7 +29,7 @@ function LabelFilterMenu() {
             <Menus.Button onClick={() => setLabelSearchParam('none')}>
               <div className="flex gap-2 items-center">
                 <span className="grow">레이블이 없는 이슈</span>
-                <RadioButton checked={searchParams.get('label') === 'none'} />
+                <RadioButton checked={isUnLabeld} />
               </div>
             </Menus.Button>
           </Table.Row>
@@ -40,7 +40,7 @@ function LabelFilterMenu() {
                 <div className="flex gap-2 items-center">
                   <LabelIcon backgroundColor={backgroundColor} />
                   <span className="grow">{title}</span>
-                  <RadioButton checked={searchParams.get('label') === title} />
+                  <RadioButton checked={getLabelSearchParam() === title} />
                 </div>
               </Menus.Button>
             </Table.Row>
