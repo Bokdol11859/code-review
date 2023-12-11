@@ -20,7 +20,7 @@ export default function useSearchParamsHandlers() {
     setSearchParams(searchParams);
   };
 
-  const setLabelSearchParam = (value: Label['title']) => {
+  const toggleLabelSearchParam = (value: Label['title']) => {
     if (searchParams.get('label') === value) {
       searchParams.delete('label');
     } else {
@@ -29,7 +29,7 @@ export default function useSearchParamsHandlers() {
     setSearchParams(searchParams);
   };
 
-  const setMilestoneSearchParam = (value: Milestone['title']) => {
+  const toggleMilestoneSearchParam = (value: Milestone['title']) => {
     if (searchParams.get('milestone') === value) {
       searchParams.delete('milestone');
     } else {
@@ -92,12 +92,21 @@ export default function useSearchParamsHandlers() {
 
   const applySearchQuery = (searchQuery: string) => {
     const { isOpen, label, likes, milestone } = parseSearchQuery(searchQuery);
-    deleteAllSearchParams();
+    searchParams.delete('isOpen');
+    searchParams.delete('like');
+    searchParams.delete('label');
+    searchParams.delete('milestone');
 
-    if (isOpen !== undefined) setOpenStatusSearchParam(isOpen);
-    if (label) setLabelSearchParam(label.value);
-    if (milestone) setMilestoneSearchParam(milestone.value);
-    if (likes?.length) setLikeSearchParams(likes);
+    if (isOpen !== undefined)
+      searchParams.set('isOpen', isOpen ? 'open' : 'close');
+    if (label) searchParams.set('label', label.value);
+    if (milestone) searchParams.set('milestone', milestone.value);
+    if (likes?.length) {
+      searchParams.delete('like');
+      likes.forEach((value) => searchParams.append('like', value));
+    }
+
+    setSearchParams(searchParams);
   };
 
   const getFilterOptions = () => {
@@ -106,30 +115,46 @@ export default function useSearchParamsHandlers() {
     if (isCloseStatus) filterOptions.isOpen = false;
     if (isOpenStatus) filterOptions.isOpen = true;
 
-    const labelSearchParam = getLabelSearchParam();
+    const labelSearchParam = searchParams.get('label');
     if (labelSearchParam)
       filterOptions.label = {
         property: 'title',
         value: labelSearchParam,
       };
 
-    const milestoneSearchParam = getMilestoneSearchParam();
+    const milestoneSearchParam = searchParams.get('milestone');
     if (milestoneSearchParam)
       filterOptions.milestone = {
         property: 'title',
         value: milestoneSearchParam,
       };
 
-    const likeSearchParmas = getLikeSearchParams();
+    const likeSearchParmas = searchParams.getAll('like');
     if (likeSearchParmas) filterOptions.likes = likeSearchParmas;
 
     return filterOptions;
   };
+  const convertParamsToQuery = () => {
+    let query = '';
+    if (isCloseStatus) query += `isOpen:close `;
+    if (isOpenStatus) query += `isOpen:open `;
 
-  const isOpenStatus = getOpenStatusSearchParam() === 'open';
-  const isCloseStatus = getOpenStatusSearchParam() === 'close';
-  const isUnLabeld = getLabelSearchParam() === 'none';
-  const isNotWithMilestone = getMilestoneSearchParam() === 'none';
+    const labelSearchParam = getLabelSearchParam();
+    if (labelSearchParam) query += `label:${labelSearchParam} `;
+
+    const milestoneSearchParam = getMilestoneSearchParam();
+    if (milestoneSearchParam) query += `milestone:${milestoneSearchParam} `;
+
+    const likeSearchParmas = getLikeSearchParams();
+    if (likeSearchParmas) query += likeSearchParmas.join(' ');
+
+    return query;
+  };
+
+  const isOpenStatus = searchParams.get('isOpen') === 'open';
+  const isCloseStatus = searchParams.get('isOpen') === 'close';
+  const isUnLabeld = searchParams.get('label') === 'none';
+  const isNotWithMilestone = searchParams.get('milestone') === 'none';
 
   const hasLabelSearchParam = searchParams.has('label');
   const hasMilestoneSearchParam = searchParams.has('milestone');
@@ -141,9 +166,9 @@ export default function useSearchParamsHandlers() {
     getMilestoneSearchParam,
     getLikeSearchParams,
 
-    setLabelSearchParam,
-    setMilestoneSearchParam,
     setOpenStatusSearchParam,
+    toggleLabelSearchParam,
+    toggleMilestoneSearchParam,
     setLikeSearchParams,
     deleteAllSearchParams,
 
@@ -157,5 +182,6 @@ export default function useSearchParamsHandlers() {
 
     applySearchQuery,
     getFilterOptions,
+    convertParamsToQuery,
   };
 }

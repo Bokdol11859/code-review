@@ -8,7 +8,7 @@ import useSearchParamsHandlers from '../../../use-search-params-handlers';
 function MilestoneFilterMenu() {
   const { milestones } = useMilestones();
   const {
-    setMilestoneSearchParam,
+    toggleMilestoneSearchParam,
     getMilestoneSearchParam,
     isNotWithMilestone,
   } = useSearchParamsHandlers();
@@ -27,7 +27,7 @@ function MilestoneFilterMenu() {
           <Table.Header>마일스톤 필터</Table.Header>
 
           <Table.Row>
-            <Menus.Button onClick={() => setMilestoneSearchParam('none')}>
+            <Menus.Button onClick={() => toggleMilestoneSearchParam('none')}>
               <div className="flex gap-2 items-center">
                 <span className="grow">마일스톤이 없는 이슈</span>
                 <RadioButton checked={isNotWithMilestone} />
@@ -37,7 +37,7 @@ function MilestoneFilterMenu() {
 
           {milestones?.map(({ id, title }) => (
             <Table.Row key={id}>
-              <Menus.Button onClick={() => setMilestoneSearchParam(title)}>
+              <Menus.Button onClick={() => toggleMilestoneSearchParam(title)}>
                 <div className="flex gap-2 items-center">
                   <span className="grow">{title}</span>
                   <RadioButton checked={getMilestoneSearchParam() === title} />

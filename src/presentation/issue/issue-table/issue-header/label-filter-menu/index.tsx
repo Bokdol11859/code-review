@@ -9,7 +9,7 @@ import useSearchParamsHandlers from '../../../use-search-params-handlers';
 function LabelFilterMenu() {
   const { labels } = useLabels();
 
-  const { setLabelSearchParam, isUnLabeld, getLabelSearchParam } =
+  const { toggleLabelSearchParam, isUnLabeld, getLabelSearchParam } =
     useSearchParamsHandlers();
 
   return (
@@ -26,7 +26,7 @@ function LabelFilterMenu() {
           <Table.Header>레이블 필터</Table.Header>
 
           <Table.Row>
-            <Menus.Button onClick={() => setLabelSearchParam('none')}>
+            <Menus.Button onClick={() => toggleLabelSearchParam('none')}>
               <div className="flex gap-2 items-center">
                 <span className="grow">레이블이 없는 이슈</span>
                 <RadioButton checked={isUnLabeld} />
@@ -36,7 +36,7 @@ function LabelFilterMenu() {
 
           {labels?.map(({ id, title, backgroundColor }) => (
             <Table.Row key={id}>
-              <Menus.Button onClick={() => setLabelSearchParam(title)}>
+              <Menus.Button onClick={() => toggleLabelSearchParam(title)}>
                 <div className="flex gap-2 items-center">
                   <LabelIcon backgroundColor={backgroundColor} />
                   <span className="grow">{title}</span>
