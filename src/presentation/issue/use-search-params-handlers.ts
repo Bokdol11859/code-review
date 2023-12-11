@@ -1,13 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { Label } from '../../domain/model/label';
 import { Milestone } from '../../domain/model/milestone';
-
-interface SearchFilter {
-  label: string | null;
-  milestone: string | null;
-  isOpen: boolean | null;
-  likes: string[];
-}
+import { IssueFilterOptions } from '../../domain/model/issue';
 
 export default function useSearchParamsHandlers() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -61,14 +55,11 @@ export default function useSearchParamsHandlers() {
   const parseSearchQuery = (query: string) => {
     const terms = query.split(' ');
 
-    const initialFilter: SearchFilter = {
-      label: null,
-      milestone: null,
-      isOpen: null,
+    const initialFilter: IssueFilterOptions = {
       likes: [],
     };
 
-    const addTermToFilter = (filter: SearchFilter, term: string) => {
+    const addTermToFilter = (filter: IssueFilterOptions, term: string) => {
       const [key, value] = term.split(':');
 
       switch (key) {
@@ -81,32 +72,58 @@ export default function useSearchParamsHandlers() {
           break;
 
         case 'label':
-          filter.label = value;
+          filter.label = { property: 'title', value };
           break;
 
         case 'milestone':
-          filter.milestone = value;
+          filter.milestone = { property: 'title', value };
           break;
 
         default:
-          filter.likes.push(term);
+          filter.likes!.push(term);
           break;
       }
 
       return filter;
     };
 
-    return terms.reduce<SearchFilter>(addTermToFilter, initialFilter);
+    return terms.reduce<IssueFilterOptions>(addTermToFilter, initialFilter);
   };
 
   const applySearchQuery = (searchQuery: string) => {
     const { isOpen, label, likes, milestone } = parseSearchQuery(searchQuery);
     deleteAllSearchParams();
 
-    if (isOpen !== null) setOpenStatusSearchParam(isOpen);
-    if (label) setLabelSearchParam(label);
-    if (milestone) setMilestoneSearchParam(milestone);
-    if (likes.length) setLikeSearchParams(likes);
+    if (isOpen !== undefined) setOpenStatusSearchParam(isOpen);
+    if (label) setLabelSearchParam(label.value);
+    if (milestone) setMilestoneSearchParam(milestone.value);
+    if (likes?.length) setLikeSearchParams(likes);
+  };
+
+  const getFilterOptions = () => {
+    const filterOptions: IssueFilterOptions = {};
+
+    if (isCloseStatus) filterOptions.isOpen = false;
+    if (isOpenStatus) filterOptions.isOpen = true;
+
+    const labelSearchParam = getLabelSearchParam();
+    if (labelSearchParam)
+      filterOptions.label = {
+        property: 'title',
+        value: labelSearchParam,
+      };
+
+    const milestoneSearchParam = getMilestoneSearchParam();
+    if (milestoneSearchParam)
+      filterOptions.milestone = {
+        property: 'title',
+        value: milestoneSearchParam,
+      };
+
+    const likeSearchParmas = getLikeSearchParams();
+    if (likeSearchParmas) filterOptions.likes = likeSearchParmas;
+
+    return filterOptions;
   };
 
   const isOpenStatus = getOpenStatusSearchParam() === 'open';
@@ -139,5 +156,6 @@ export default function useSearchParamsHandlers() {
     hasLikeSearchParam,
 
     applySearchQuery,
+    getFilterOptions,
   };
 }
