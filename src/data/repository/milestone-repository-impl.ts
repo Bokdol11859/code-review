@@ -1,10 +1,18 @@
+import { inject, injectable } from 'inversify';
 import { Milestone } from '../../domain/model/milestone';
 import { MilestoneRepository } from '../../domain/repository/milestone-repository';
 import { MilestoneAPIEntity } from '../data-source/api/entity/milestone-api-entity';
-import MilestoneDataSource from '../data-source/milestone-data-source';
+import type MilestoneDataSource from '../data-source/milestone-data-source';
+import { TYPES } from '../../di/types';
 
+@injectable()
 export class MilestoneRepositoryImpl implements MilestoneRepository {
-  constructor(private datasource: MilestoneDataSource) {}
+  private _datasource: MilestoneDataSource;
+  constructor(
+    @inject(TYPES.MilestoneDataSource) private datasource: MilestoneDataSource
+  ) {
+    this._datasource = datasource;
+  }
 
   async getMilestones() {
     const data = await this.datasource.getLabels();

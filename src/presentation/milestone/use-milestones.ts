@@ -1,15 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import MilestoneDataSourceImpl from '../../data/data-source/api/milestone-data-source-impl';
-import { MilestoneRepositoryImpl } from '../../data/repository/milestone-repository-impl';
+
+import { container } from '../../di/inversify.config';
+import { TYPES } from '../../di/types';
 import { GetMilestones } from '../../domain/use-case/milestones/get-milestones';
 
 export default function useMilestones() {
-  const milestonesDataSourceImpl = new MilestoneDataSourceImpl();
-  const milestonesRepositoryImpl = new MilestoneRepositoryImpl(
-    milestonesDataSourceImpl
+  const getMilestonesUseCase = container.get<GetMilestones>(
+    TYPES.GetMilestonesUseCase
   );
-
-  const getMilestonesUseCase = new GetMilestones(milestonesRepositoryImpl);
 
   const {
     isLoading,

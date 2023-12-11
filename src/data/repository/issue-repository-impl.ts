@@ -1,10 +1,17 @@
+import { inject, injectable } from 'inversify';
 import { Issue, IssueFilterOptions } from '../../domain/model/issue';
 import { IssueRepository } from '../../domain/repository/issue-repository';
 import { IssueAPIEntity } from '../data-source/api/entity/issue-api-entity';
-import IssueDataSource from '../data-source/issue-data-source';
+import type IssueDataSource from '../data-source/issue-data-source';
+import { TYPES } from '../../di/types';
 
+@injectable()
 export class IssueRepositoryImpl implements IssueRepository {
-  constructor(private datasource: IssueDataSource) {}
+  private _datasource: IssueDataSource;
+
+  constructor(@inject(TYPES.IssueDataSource) dataSource: IssueDataSource) {
+    this._datasource = dataSource;
+  }
 
   async getIssues(filterOptions: IssueFilterOptions): Promise<{
     data: Issue[];
@@ -12,17 +19,17 @@ export class IssueRepositoryImpl implements IssueRepository {
     closeIssueCount: number;
   }> {
     const { data, openIssueCount, closeIssueCount } =
-      await this.datasource.getIssues(filterOptions);
+      await this._datasource.getIssues(filterOptions);
 
     return this.mapEntityToModel({ data, openIssueCount, closeIssueCount });
   }
 
   async openIssues(ids: Brand<number, Issue>[]) {
-    return this.datasource.openIssues(ids);
+    return this._datasource.openIssues(ids);
   }
 
   async closeIssues(ids: Brand<number, Issue>[]): Promise<void> {
-    return this.datasource.closeIssues(ids);
+    return this._datasource.closeIssues(ids);
   }
 
   private mapEntityToModel(entity: IssueAPIEntity): {

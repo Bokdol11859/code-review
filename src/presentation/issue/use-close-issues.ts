@@ -1,14 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import IssueDataSourceImpl from '../../data/data-source/api/issue-data-source-impl';
-import { IssueRepositoryImpl } from '../../data/repository/issue-repository-impl';
 import { Issue } from '../../domain/model/issue';
-import { CloseIssues } from '../../domain/use-case/issues/close-issues';
+import { container } from '../../di/inversify.config';
+import { CloseIssuesUseCase } from '../../domain/use-case/issues/close-issues';
+import { TYPES } from '../../di/types';
 
 export default function useCloseIssues() {
-  const issuesDataSourceImpl = new IssueDataSourceImpl();
-  const issuesRepositoryImpl = new IssueRepositoryImpl(issuesDataSourceImpl);
-
-  const closeIssuesUseCase = new CloseIssues(issuesRepositoryImpl);
+  const closeIssuesUseCase = container.get<CloseIssuesUseCase>(
+    TYPES.CloseIssuesUseCase
+  );
 
   const queryClient = useQueryClient();
 

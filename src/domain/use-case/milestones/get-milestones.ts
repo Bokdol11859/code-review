@@ -1,17 +1,22 @@
+import { inject, injectable } from 'inversify';
 import { Milestone } from '../../model/milestone';
-import { MilestoneRepository } from '../../repository/milestone-repository';
+import type { MilestoneRepository } from '../../repository/milestone-repository';
+import { TYPES } from '../../../di/types';
 
 export interface GetMilestonesUseCase {
   invoke: () => Promise<Milestone[]>;
 }
 
+@injectable()
 export class GetMilestones implements GetMilestonesUseCase {
-  private milestoneRepo: MilestoneRepository;
-  constructor(_milestoneRepo: MilestoneRepository) {
-    this.milestoneRepo = _milestoneRepo;
+  private _milestoneRepo: MilestoneRepository;
+  constructor(
+    @inject(TYPES.MilestoneRepository) milestoneRepo: MilestoneRepository
+  ) {
+    this._milestoneRepo = milestoneRepo;
   }
 
   async invoke() {
-    return this.milestoneRepo.getMilestones();
+    return this._milestoneRepo.getMilestones();
   }
 }

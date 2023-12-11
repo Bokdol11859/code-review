@@ -1,6 +1,8 @@
+import { injectable } from 'inversify';
 import MilestoneDataSource from '../milestone-data-source';
 import supabase from './supabase-db/supabase';
 
+@injectable()
 export default class MilestoneDataSourceImpl implements MilestoneDataSource {
   async getLabels() {
     const { data, error } = await supabase.from('milestones').select('*');

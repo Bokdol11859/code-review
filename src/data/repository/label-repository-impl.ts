@@ -1,13 +1,20 @@
+import { inject, injectable } from 'inversify';
 import { Label } from '../../domain/model/label';
 import { LabelRepository } from '../../domain/repository/label-repository';
 import { LabelAPIEntity } from '../data-source/api/entity/label-api-entity';
-import LabelDataSource from '../data-source/label-data-source';
+import type LabelDataSource from '../data-source/label-data-source';
+import { TYPES } from '../../di/types';
 
+@injectable()
 export class LabelRepositoryImpl implements LabelRepository {
-  constructor(private datasource: LabelDataSource) {}
+  private _datasource: LabelDataSource;
+
+  constructor(@inject(TYPES.LabelDataSource) dataSource: LabelDataSource) {
+    this._datasource = dataSource;
+  }
 
   async getLabels() {
-    const data = await this.datasource.getLabels();
+    const data = await this._datasource.getLabels();
 
     return this.mapEntityToModel(data);
   }

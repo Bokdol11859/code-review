@@ -2,7 +2,8 @@ import { Issue, IssueFilterOptions } from '../../../domain/model/issue';
 import IssueDataSource from '../issue-data-source';
 import { IssueAPIEntity } from './entity/issue-api-entity';
 import supabase from './supabase-db/supabase';
-
+import { injectable } from 'inversify';
+@injectable()
 export default class IssueDataSourceImpl implements IssueDataSource {
   async getIssues(filterOptions: IssueFilterOptions) {
     const { label, milestone, isOpen } = filterOptions;
