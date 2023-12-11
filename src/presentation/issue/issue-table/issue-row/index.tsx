@@ -3,7 +3,7 @@ import Label from '../../../../common-ui/label';
 import Table from '../../../../common-ui/table';
 import { Issue } from '../../../../domain/model/issue';
 import { timeDiffFromNow } from '../../../../utils/helpers';
-import { useSelectedIssues } from '../../SelectedIssuesContext';
+import { useSelectedIssues } from '../../selected-issues-context';
 
 interface IssueRowProps {
   issue: Issue;

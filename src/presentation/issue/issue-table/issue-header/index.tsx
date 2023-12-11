@@ -1,7 +1,7 @@
 import Button from '../../../../common-ui/button';
 import Checkbox from '../../../../common-ui/checkbox';
 import { Issue } from '../../../../domain/model/issue';
-import { useSelectedIssues } from '../../SelectedIssuesContext';
+import { useSelectedIssues } from '../../selected-issues-context';
 import LabelFilterMenu from './label-filter-menu';
 import MilestoneFilterMenu from './milestone-filter-menu';
 import StatusFilterButtons from './status-filter-buttons';

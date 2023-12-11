@@ -4,7 +4,7 @@ import Table from '../../../common-ui/table';
 import IssueRow from './issue-row';
 import IssueHeader from './issue-header';
 import Menus from '../../../common-ui/menus';
-import { SelectedIssuesProvider } from '../SelectedIssuesContext';
+import { SelectedIssuesProvider } from '../selected-issues-context';
 import { useNavigate } from 'react-router-dom';
 
 function IssueTable() {
