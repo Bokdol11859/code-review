@@ -6,8 +6,8 @@ import { TYPES } from '../../../di/types';
 export interface GetIssuesUseCase {
   invoke: (filterOptions: IssueFilterOptions) => Promise<{
     data: Issue[];
-    openIssueCount: number | null;
-    closeIssueCount: number | null;
+    openIssueCount: number;
+    closeIssueCount: number;
   }>;
 }
 

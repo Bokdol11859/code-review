@@ -7,8 +7,8 @@ interface StatusFilterButtonsProps {
 }
 
 function StatusFilterButtons({
-  openIssueCount,
-  closeIssueCount,
+  openIssueCount = 0,
+  closeIssueCount = 0,
 }: StatusFilterButtonsProps) {
   const { setOpenStatusSearchParam, isOpenStatus, isCloseStatus } =
     useSearchParamsHandlers();
