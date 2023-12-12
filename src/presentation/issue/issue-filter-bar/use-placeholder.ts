@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import useSearchParamsHandlers from '../use-search-params-handlers';
 
-function useSearchParamsPlaceholder() {
+function usePlaceholder() {
   const [placeholder, setPlaceholder] = useState('');
   const { convertParamsToQuery } = useSearchParamsHandlers();
 
@@ -13,4 +13,4 @@ function useSearchParamsPlaceholder() {
   return placeholder;
 }
 
-export default useSearchParamsPlaceholder;
+export default usePlaceholder;

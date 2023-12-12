@@ -3,7 +3,7 @@ import Button from '../../../common-ui/button';
 import FilterBar from '../../../common-ui/filter-bar';
 import Menus from '../../../common-ui/menus';
 import Table from '../../../common-ui/table';
-import useSearchParamsPlaceholder from './use-search-params-placeholder';
+import usePlaceholder from './use-placeholder';
 import RadioButton from '../../../common-ui/radio-button';
 import useSearchParamsHandlers from '../use-search-params-handlers';
 
@@ -14,7 +14,7 @@ function IssueFilterBar() {
     isOpenStatus,
     isCloseStatus,
   } = useSearchParamsHandlers();
-  const placeholder = useSearchParamsPlaceholder();
+  const placeholder = usePlaceholder();
   const inputRef = useRef<HTMLInputElement>(null);
 
   function handleKeyDown(e: React.KeyboardEvent) {

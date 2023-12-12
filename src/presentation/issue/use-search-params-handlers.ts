@@ -3,52 +3,59 @@ import { Label } from '../../domain/model/label';
 import { Milestone } from '../../domain/model/milestone';
 import { IssueFilterOptions } from '../../domain/model/issue';
 
+export const OPEN_STATUS_KEY = 'isOpen';
+export const LABEL_KEY = 'label';
+export const MILESTONE_KEY = 'milestone';
+export const LIKE_KEY = 'like';
+export const OPEN = 'open';
+export const CLOSE = 'close';
+
 export default function useSearchParamsHandlers() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const getOpenStatusSearchParam = () => searchParams.get('isOpen');
-  const getLabelSearchParam = () => searchParams.get('label');
-  const getMilestoneSearchParam = () => searchParams.get('milestone');
-  const getLikeSearchParams = () => searchParams.getAll('like');
+  const getOpenStatusSearchParam = () => searchParams.get(OPEN_STATUS_KEY);
+  const getLabelSearchParam = () => searchParams.get(LABEL_KEY);
+  const getMilestoneSearchParam = () => searchParams.get(MILESTONE_KEY);
+  const getLikeSearchParams = () => searchParams.getAll(LIKE_KEY);
 
   const setOpenStatusSearchParam = (isOpen: boolean | null) => {
     if (isOpen === null) {
-      searchParams.delete('isOpen');
+      searchParams.delete(OPEN_STATUS_KEY);
     } else {
-      searchParams.set('isOpen', isOpen ? 'open' : 'close');
+      searchParams.set(OPEN_STATUS_KEY, isOpen ? OPEN : CLOSE);
     }
     setSearchParams(searchParams);
   };
 
   const toggleLabelSearchParam = (value: Label['title']) => {
-    if (searchParams.get('label') === value) {
-      searchParams.delete('label');
+    if (searchParams.get(LABEL_KEY) === value) {
+      searchParams.delete(LABEL_KEY);
     } else {
-      searchParams.set('label', value);
+      searchParams.set(LABEL_KEY, value);
     }
     setSearchParams(searchParams);
   };
 
   const toggleMilestoneSearchParam = (value: Milestone['title']) => {
-    if (searchParams.get('milestone') === value) {
-      searchParams.delete('milestone');
+    if (searchParams.get(MILESTONE_KEY) === value) {
+      searchParams.delete(MILESTONE_KEY);
     } else {
-      searchParams.set('milestone', value);
+      searchParams.set(MILESTONE_KEY, value);
     }
     setSearchParams(searchParams);
   };
 
   const setLikeSearchParams = (values: string[]) => {
-    searchParams.delete('like');
-    values.forEach((value) => searchParams.append('like', value));
+    searchParams.delete(LIKE_KEY);
+    values.forEach((value) => searchParams.append(LIKE_KEY, value));
     setSearchParams(searchParams);
   };
 
   const deleteAllSearchParams = () => {
-    searchParams.delete('isOpen');
-    searchParams.delete('like');
-    searchParams.delete('label');
-    searchParams.delete('milestone');
+    searchParams.delete(OPEN_STATUS_KEY);
+    searchParams.delete(LIKE_KEY);
+    searchParams.delete(LABEL_KEY);
+    searchParams.delete(MILESTONE_KEY);
     setSearchParams(searchParams);
   };
 
@@ -66,17 +73,23 @@ export default function useSearchParamsHandlers() {
         case '':
           break;
 
-        case 'isOpen':
-          if (value === 'open') filter.isOpen = true;
-          if (value === 'close') filter.isOpen = false;
+        case OPEN_STATUS_KEY:
+          if (value === OPEN) filter.isOpen = true;
+          if (value === CLOSE) filter.isOpen = false;
           break;
 
-        case 'label':
-          filter.label = { property: 'title', value };
+        case LABEL_KEY:
+          filter.label = {
+            property: 'title',
+            value,
+          };
           break;
 
-        case 'milestone':
-          filter.milestone = { property: 'title', value };
+        case MILESTONE_KEY:
+          filter.milestone = {
+            property: 'title',
+            value,
+          };
           break;
 
         default:
@@ -92,18 +105,18 @@ export default function useSearchParamsHandlers() {
 
   const applySearchQuery = (searchQuery: string) => {
     const { isOpen, label, likes, milestone } = parseSearchQuery(searchQuery);
-    searchParams.delete('isOpen');
-    searchParams.delete('like');
-    searchParams.delete('label');
-    searchParams.delete('milestone');
+    searchParams.delete(OPEN_STATUS_KEY);
+    searchParams.delete(LIKE_KEY);
+    searchParams.delete(LABEL_KEY);
+    searchParams.delete(MILESTONE_KEY);
 
     if (isOpen !== undefined)
-      searchParams.set('isOpen', isOpen ? 'open' : 'close');
-    if (label) searchParams.set('label', label.value);
-    if (milestone) searchParams.set('milestone', milestone.value);
+      searchParams.set(OPEN_STATUS_KEY, isOpen ? OPEN : CLOSE);
+    if (label) searchParams.set(LABEL_KEY, label.value);
+    if (milestone) searchParams.set(MILESTONE_KEY, milestone.value);
     if (likes?.length) {
-      searchParams.delete('like');
-      likes.forEach((value) => searchParams.append('like', value));
+      searchParams.delete(LIKE_KEY);
+      likes.forEach((value) => searchParams.append(LIKE_KEY, value));
     }
 
     setSearchParams(searchParams);
@@ -115,35 +128,36 @@ export default function useSearchParamsHandlers() {
     if (isCloseStatus) filterOptions.isOpen = false;
     if (isOpenStatus) filterOptions.isOpen = true;
 
-    const labelSearchParam = searchParams.get('label');
+    const labelSearchParam = searchParams.get(LABEL_KEY);
     if (labelSearchParam)
       filterOptions.label = {
         property: 'title',
         value: labelSearchParam,
       };
 
-    const milestoneSearchParam = searchParams.get('milestone');
+    const milestoneSearchParam = searchParams.get(MILESTONE_KEY);
     if (milestoneSearchParam)
       filterOptions.milestone = {
         property: 'title',
         value: milestoneSearchParam,
       };
 
-    const likeSearchParmas = searchParams.getAll('like');
+    const likeSearchParmas = searchParams.getAll(LIKE_KEY);
     if (likeSearchParmas) filterOptions.likes = likeSearchParmas;
 
     return filterOptions;
   };
   const convertParamsToQuery = () => {
     let query = '';
-    if (isCloseStatus) query += `isOpen:close `;
-    if (isOpenStatus) query += `isOpen:open `;
+    if (isCloseStatus) query += `${OPEN_STATUS_KEY}:${CLOSE} `;
+    if (isOpenStatus) query += `${OPEN_STATUS_KEY}:${OPEN} `;
 
-    const labelSearchParam = getLabelSearchParam();
-    if (labelSearchParam) query += `label:${labelSearchParam} `;
+    let labelSearchParam = getLabelSearchParam();
+    if (labelSearchParam) query += `${LABEL_KEY}:${labelSearchParam} `;
 
-    const milestoneSearchParam = getMilestoneSearchParam();
-    if (milestoneSearchParam) query += `milestone:${milestoneSearchParam} `;
+    let milestoneSearchParam = getMilestoneSearchParam();
+    if (milestoneSearchParam)
+      query += `${MILESTONE_KEY}:${milestoneSearchParam} `;
 
     const likeSearchParmas = getLikeSearchParams();
     if (likeSearchParmas) query += likeSearchParmas.join(' ');
@@ -151,14 +165,14 @@ export default function useSearchParamsHandlers() {
     return query;
   };
 
-  const isOpenStatus = searchParams.get('isOpen') === 'open';
-  const isCloseStatus = searchParams.get('isOpen') === 'close';
-  const isUnLabeld = searchParams.get('label') === 'none';
-  const isNotWithMilestone = searchParams.get('milestone') === 'none';
+  const isOpenStatus = searchParams.get(OPEN_STATUS_KEY) === OPEN;
+  const isCloseStatus = searchParams.get(OPEN_STATUS_KEY) === CLOSE;
+  const isUnLabeld = searchParams.get(LABEL_KEY) === 'none';
+  const isNotWithMilestone = searchParams.get(MILESTONE_KEY) === 'none';
 
-  const hasLabelSearchParam = searchParams.has('label');
-  const hasMilestoneSearchParam = searchParams.has('milestone');
-  const hasLikeSearchParam = searchParams.has('like');
+  const hasLabelSearchParam = searchParams.has(LABEL_KEY);
+  const hasMilestoneSearchParam = searchParams.has(MILESTONE_KEY);
+  const hasLikeSearchParam = searchParams.has(LIKE_KEY);
 
   return {
     getOpenStatusSearchParam,
