@@ -24,10 +24,11 @@ module.exports = {
       'icon-text': colors.gray[50],
       'icon-background-blue': colors.blue[500],
       'icon-background-navy': colors.blue[700],
+      inherit: colors.inherit,
     },
     borderRadius: {
       regular: '11px',
-      midium: '14px',
+      medium: '14px',
       large: '16px',
       full: '9999px',
     },
