@@ -51,11 +51,13 @@ export default function useSearchParamsHandlers() {
     setSearchParams(searchParams);
   };
 
-  const deleteAllSearchParams = () => {
+  const initSearchParams = () => {
     searchParams.delete(OPEN_STATUS_KEY);
     searchParams.delete(LIKE_KEY);
     searchParams.delete(LABEL_KEY);
     searchParams.delete(MILESTONE_KEY);
+
+    searchParams.set(OPEN_STATUS_KEY, OPEN);
     setSearchParams(searchParams);
   };
 
@@ -184,7 +186,7 @@ export default function useSearchParamsHandlers() {
     toggleLabelSearchParam,
     toggleMilestoneSearchParam,
     setLikeSearchParams,
-    deleteAllSearchParams,
+    initSearchParams,
 
     isOpenStatus,
     isCloseStatus,

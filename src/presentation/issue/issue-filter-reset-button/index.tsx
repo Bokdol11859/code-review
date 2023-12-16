@@ -7,8 +7,7 @@ function IssueFilterResetButton() {
     hasLabelSearchParam,
     hasMilestoneSearchParam,
     hasLikeSearchParam,
-    setOpenStatusSearchParam,
-    deleteAllSearchParams,
+    initSearchParams,
   } = useSearchParamsHandlers();
 
   const initialCondition =
@@ -18,8 +17,7 @@ function IssueFilterResetButton() {
     !hasLikeSearchParam;
 
   function handleClick() {
-    deleteAllSearchParams();
-    setOpenStatusSearchParam(true);
+    initSearchParams();
   }
 
   if (initialCondition) return null;
