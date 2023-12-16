@@ -32,6 +32,10 @@ import { MilestoneRepository } from '../domain/repository/milestone-repository';
 import MilestoneDataSourceImpl from '../data/data-source/api/milestone-data-source-impl';
 import MilestoneDataSource from '../data/data-source/milestone-data-source';
 import { MilestoneRepositoryImpl } from '../data/repository/milestone-repository-impl';
+import {
+  CreateIssue,
+  CreateIssueUseCase,
+} from '../domain/use-case/issues/create-issue';
 
 const container = new Container();
 
@@ -40,6 +44,7 @@ container.bind<IssueRepository>(TYPES.IssueRepository).to(IssueRepositoryImpl);
 container.bind<GetIssuesUseCase>(TYPES.GetIssuesUseCase).to(GetIssues);
 container.bind<CloseIssuesUseCase>(TYPES.CloseIssuesUseCase).to(CloseIssues);
 container.bind<OpenIssuesUseCase>(TYPES.OpenIssuesUseCase).to(OpenIssues);
+container.bind<CreateIssueUseCase>(TYPES.CreateIssueUseCase).to(CreateIssue);
 
 container.bind<LabelDataSource>(TYPES.LabelDataSource).to(LabelDataSourceImpl);
 container.bind<LabelRepository>(TYPES.LabelRepository).to(LabelRepositoryImpl);

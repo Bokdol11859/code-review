@@ -1,4 +1,8 @@
-import { Issue, IssueFilterOptions } from '../../../domain/model/issue';
+import {
+  Issue,
+  IssueFilterOptions,
+  NewIssue,
+} from '../../../domain/model/issue';
 import IssueDataSource from '../issue-data-source';
 import { IssueAPIEntity } from './entity/issue-api-entity';
 import supabase from './supabase-db/supabase';
@@ -94,6 +98,23 @@ export default class IssueDataSourceImpl implements IssueDataSource {
     if (error) {
       throw new Error('이슈를 닫지 못했습니다.');
     }
+
+    return;
+  }
+
+  async createIssue(newIssue: NewIssue): Promise<void> {
+    const { title, description, labelId, milestoneId } = newIssue;
+
+    const { error } = await supabase
+      .from('issues')
+      .insert({
+        title,
+        contents: description,
+        label_id: labelId,
+        milestone_id: milestoneId,
+      });
+
+    if (error) throw new Error('이슈를 생성하지 못했습니다.');
 
     return;
   }

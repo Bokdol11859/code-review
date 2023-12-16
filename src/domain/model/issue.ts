@@ -20,3 +20,10 @@ export interface IssueFilterOptions {
   milestone?: IssueFilterOption<Milestone, 'title'>;
   likes?: string[];
 }
+
+export interface NewIssue {
+  title: string;
+  description?: string;
+  labelId?: number;
+  milestoneId?: number;
+}

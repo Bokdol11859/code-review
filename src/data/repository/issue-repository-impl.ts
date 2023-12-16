@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { Issue, IssueFilterOptions } from '../../domain/model/issue';
+import { Issue, IssueFilterOptions, NewIssue } from '../../domain/model/issue';
 import { IssueRepository } from '../../domain/repository/issue-repository';
 import { IssueAPIEntity } from '../data-source/api/entity/issue-api-entity';
 import type IssueDataSource from '../data-source/issue-data-source';
@@ -30,6 +30,9 @@ export class IssueRepositoryImpl implements IssueRepository {
 
   async closeIssues(ids: Brand<number, Issue>[]): Promise<void> {
     return this._datasource.closeIssues(ids);
+  }
+  async createIssue(newIssue: NewIssue): Promise<void> {
+    return this._datasource.createIssue(newIssue);
   }
 
   private mapEntityToModel(entity: IssueAPIEntity): {
