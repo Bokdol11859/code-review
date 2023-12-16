@@ -11,7 +11,7 @@ function Label({ children, textColor, backgroundColor }: LabelProps) {
         color: textColor,
         backgroundColor: backgroundColor,
       }}
-      className="px-4 rounded-[50px]"
+      className="px-4 rounded-[50px] w-fit"
     >
       {children}
     </div>
