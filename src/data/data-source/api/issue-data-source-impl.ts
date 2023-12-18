@@ -1,8 +1,8 @@
+import { Issue } from '../../../domain/model/issue';
 import {
-  Issue,
+  IssueCreationData,
   IssueFilterOptions,
-  NewIssue,
-} from '../../../domain/model/issue';
+} from '../../../domain/repository/issue-repository';
 import IssueDataSource from '../issue-data-source';
 import { IssueAPIEntity } from './entity/issue-api-entity';
 import supabase from './supabase-db/supabase';
@@ -10,65 +10,36 @@ import { injectable } from 'inversify';
 @injectable()
 export default class IssueDataSourceImpl implements IssueDataSource {
   async getIssues(filterOptions: IssueFilterOptions) {
-    const { label, milestone, isOpen } = filterOptions;
+    const dataQuery = this.buildGetIssuesQuery(filterOptions);
 
-    const labelInner = label && label.value !== 'none' ? '!inner' : '';
-    const milestoneInner =
-      milestone && milestone.value !== 'none' ? '!inner' : '';
-
-    let query = supabase
-      .from('issues')
-      .select(
-        `id, title, is_open, created_at, labels${labelInner}(id, title, text_color, background_color), milestones${milestoneInner}(id, title)`
-      );
-
-    query = this.applyFilterOptions(query, filterOptions);
-
-    if (isOpen === true) query = query.eq('is_open', true);
-    if (isOpen === false) query = query.eq('is_open', false);
-
-    let openIssueCountQuery = supabase
-      .from('issues')
-      .select(
-        `labels${labelInner}(id, title, text_color, background_color), milestones${milestoneInner}(id, title)`,
-        { count: 'exact' }
-      );
-
-    openIssueCountQuery = this.applyFilterOptions(
-      openIssueCountQuery,
-      filterOptions
-    );
-
-    openIssueCountQuery.eq('is_open', true);
-
-    let closeIssueCountQuery = supabase
-      .from('issues')
-      .select(
-        `labels${labelInner}(id, title, text_color, background_color), milestones${milestoneInner}(id, title)`,
-        { count: 'exact' }
-      );
-
-    closeIssueCountQuery = this.applyFilterOptions(
-      closeIssueCountQuery,
-      filterOptions
-    );
-
-    closeIssueCountQuery.eq('is_open', false);
+    const openIssueCountQuery =
+      this.buildGetOpenIssuesCountQuery(filterOptions);
+    const closeIssueCountQuery =
+      this.buildGetCloseIssuesCountQuery(filterOptions);
 
     const [
       { data, error },
       { count: openIssueCount, error: openIssueCountQueryError },
       { count: closeIssueCount, error: closeIssueCountQueryError },
-    ] = await Promise.all([query, openIssueCountQuery, closeIssueCountQuery]);
+    ] = await Promise.all([
+      dataQuery,
+      openIssueCountQuery,
+      closeIssueCountQuery,
+    ]);
 
     if (error || openIssueCountQueryError || closeIssueCountQueryError) {
       throw new Error('이슈를 불러오지 못했습니다.');
     }
 
-    return { data, openIssueCount, closeIssueCount } as IssueAPIEntity;
+    // TODO: 타입 오류 해결
+    return {
+      data,
+      openIssueCount,
+      closeIssueCount,
+    } as unknown as IssueAPIEntity;
   }
 
-  async openIssues(ids: Brand<number, Issue>[]): Promise<void> {
+  async openIssues(ids: Issue['id'][]): Promise<void> {
     const toUpsert = ids.map((id) => {
       return {
         id,
@@ -85,7 +56,7 @@ export default class IssueDataSourceImpl implements IssueDataSource {
     return;
   }
 
-  async closeIssues(ids: Brand<number, Issue>[]): Promise<void> {
+  async closeIssues(ids: Issue['id'][]): Promise<void> {
     const toUpsert = ids.map((id) => {
       return {
         id,
@@ -102,35 +73,97 @@ export default class IssueDataSourceImpl implements IssueDataSource {
     return;
   }
 
-  async createIssue(newIssue: NewIssue): Promise<void> {
-    const { title, description, labelId, milestoneId } = newIssue;
+  async createIssue(newIssue: IssueCreationData): Promise<void> {
+    const { title, contents, labelId, milestoneId } = newIssue;
 
-    const { error } = await supabase
-      .from('issues')
-      .insert({
-        title,
-        contents: description,
-        label_id: labelId,
-        milestone_id: milestoneId,
-      });
+    const { error } = await supabase.from('issues').insert({
+      title,
+      contents,
+      label_id: labelId,
+      milestone_id: milestoneId,
+    });
 
     if (error) throw new Error('이슈를 생성하지 못했습니다.');
 
     return;
   }
 
-  private applyFilterOptions(query: any, filterOptions: IssueFilterOptions) {
-    const { label, milestone, likes } = filterOptions;
+  private buildGetIssuesQuery(filterOptions: IssueFilterOptions) {
+    const { isOpen } = filterOptions;
+    const { labelInner, milestoneInner } = this.determineInner(filterOptions);
 
-    if (label) {
-      if (label.value !== 'none')
-        query = query.eq(`labels.${label.property}`, label.value);
+    let query = supabase
+      .from('issues')
+      .select(
+        `id, title, is_open, created_at, labels${labelInner}(id, title, text_color, background_color), milestones${milestoneInner}(id, title)`
+      );
+
+    query = this.applyFilterOptions(query, filterOptions);
+
+    if (isOpen === true) query = query.eq('is_open', true);
+    if (isOpen === false) query = query.eq('is_open', false);
+
+    return query;
+  }
+
+  private buildGetOpenIssuesCountQuery(filterOptions: IssueFilterOptions) {
+    const { labelInner, milestoneInner } = this.determineInner(filterOptions);
+
+    let query = supabase
+      .from('issues')
+      .select(
+        `labels${labelInner}(id, title, text_color, background_color), milestones${milestoneInner}(id, title)`,
+        { count: 'exact' }
+      );
+
+    query = this.applyFilterOptions(query, filterOptions);
+
+    query.eq('is_open', true);
+
+    return query;
+  }
+
+  private buildGetCloseIssuesCountQuery(filterOptions: IssueFilterOptions) {
+    const { labelInner, milestoneInner } = this.determineInner(filterOptions);
+
+    let query = supabase
+      .from('issues')
+      .select(
+        `labels${labelInner}(id, title, text_color, background_color), milestones${milestoneInner}(id, title)`,
+        { count: 'exact' }
+      );
+
+    query = this.applyFilterOptions(query, filterOptions);
+
+    query.eq('is_open', false);
+
+    return query;
+  }
+
+  private determineInner(filterOptions: IssueFilterOptions) {
+    const { labelTitle, milestoneTitle } = filterOptions;
+
+    const labelInner = labelTitle && labelTitle !== 'none' ? '!inner' : '';
+    const milestoneInner =
+      milestoneTitle && milestoneTitle !== 'none' ? '!inner' : '';
+
+    return {
+      labelInner,
+      milestoneInner,
+    };
+  }
+
+  private applyFilterOptions(query: any, filterOptions: IssueFilterOptions) {
+    const { labelTitle, milestoneTitle, likes } = filterOptions;
+
+    if (labelTitle) {
+      if (labelTitle !== 'none') query = query.eq('labels.title', labelTitle);
       else query = query.is(`labels`, null);
     }
 
-    if (milestone) {
-      if (milestone.value !== 'none')
-        query = query.eq(`milestones.${milestone.property}`, milestone.value);
+    if (milestoneTitle) {
+      if (milestoneTitle !== 'none')
+        query = query.eq(`milestones.title`, milestoneTitle);
       else query = query.is('milestones', null);
     }
 
