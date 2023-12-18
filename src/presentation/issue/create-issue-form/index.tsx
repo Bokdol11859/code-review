@@ -161,7 +161,7 @@ function CreateIssueForm() {
 
             <Menus.Window id="addLabel">
               <Table columns="1fr" size="S">
-                {labels?.map((label) => (
+                {labels?.data?.map((label) => (
                   <Table.Row key={label.id}>
                     <Menus.Button onClick={() => addLabel(label)}>
                       <div className="flex gap-2 items-center">
@@ -176,7 +176,7 @@ function CreateIssueForm() {
 
             <Menus.Window id="addMilestone">
               <Table columns="1fr" size="S">
-                {milestones?.map((milestone) => (
+                {milestones?.data?.map((milestone) => (
                   <Table.Row key={milestone.id}>
                     <Menus.Button onClick={() => addMilestone(milestone)}>
                       <div className="flex gap-2 items-center">

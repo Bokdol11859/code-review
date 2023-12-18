@@ -34,7 +34,7 @@ function LabelFilterMenu() {
             </Menus.Button>
           </Table.Row>
 
-          {labels?.map(({ id, title, backgroundColor }) => (
+          {labels?.data?.map(({ id, title, backgroundColor }) => (
             <Table.Row key={id}>
               <Menus.Button onClick={() => toggleLabelSearchParam(title)}>
                 <div className="flex gap-2 items-center">

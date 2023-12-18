@@ -1,6 +1,11 @@
 import { inject, injectable } from 'inversify';
-import { Issue, IssueFilterOptions, NewIssue } from '../../domain/model/issue';
-import { IssueRepository } from '../../domain/repository/issue-repository';
+import { Issue } from '../../domain/model/issue';
+import {
+  IssueCreationData,
+  IssueFilterOptions,
+  IssueRepository,
+  IssuesSummary,
+} from '../../domain/repository/issue-repository';
 import { IssueAPIEntity } from '../data-source/api/entity/issue-api-entity';
 import type IssueDataSource from '../data-source/issue-data-source';
 import { TYPES } from '../../di/types';
@@ -13,40 +18,32 @@ export class IssueRepositoryImpl implements IssueRepository {
     this._datasource = dataSource;
   }
 
-  async getIssues(filterOptions: IssueFilterOptions): Promise<{
-    data: Issue[];
-    openIssueCount: number;
-    closeIssueCount: number;
-  }> {
+  async getIssues(filterOptions: IssueFilterOptions): Promise<IssuesSummary> {
     const { data, openIssueCount, closeIssueCount } =
       await this._datasource.getIssues(filterOptions);
 
     return this.mapEntityToModel({ data, openIssueCount, closeIssueCount });
   }
 
-  async openIssues(ids: Brand<number, Issue>[]) {
+  async openIssues(ids: Issue['id'][]): Promise<void> {
     return this._datasource.openIssues(ids);
   }
 
-  async closeIssues(ids: Brand<number, Issue>[]): Promise<void> {
+  async closeIssues(ids: Issue['id'][]): Promise<void> {
     return this._datasource.closeIssues(ids);
   }
-  async createIssue(newIssue: NewIssue): Promise<void> {
+  async createIssue(newIssue: IssueCreationData): Promise<void> {
     return this._datasource.createIssue(newIssue);
   }
 
-  private mapEntityToModel(entity: IssueAPIEntity): {
-    data: Issue[];
-    openIssueCount: number;
-    closeIssueCount: number;
-  } {
+  private mapEntityToModel(entity: IssueAPIEntity): IssuesSummary {
     const { data, openIssueCount, closeIssueCount } = entity;
 
     return {
       data: data.map(
         ({ id, title, created_at, is_open, labels, milestones }) => {
           return {
-            id: id as Brand<number, Issue>,
+            id,
             title,
             isOpen: is_open,
             createdAt: new Date(created_at),
@@ -66,6 +63,6 @@ export class IssueRepositoryImpl implements IssueRepository {
       ),
       openIssueCount,
       closeIssueCount,
-    };
+    } as IssuesSummary;
   }
 }

@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { Label } from '../../domain/model/label';
 import { Milestone } from '../../domain/model/milestone';
-import { IssueFilterOptions } from '../../domain/model/issue';
+import { IssueFilterOptions } from '../../domain/repository/issue-repository';
 
 export const OPEN_STATUS_KEY = 'isOpen';
 export const LABEL_KEY = 'label';
@@ -76,22 +76,18 @@ export default function useSearchParamsHandlers() {
           break;
 
         case OPEN_STATUS_KEY:
-          if (value === OPEN) filter.isOpen = true;
-          if (value === CLOSE) filter.isOpen = false;
+          if (value === OPEN)
+            filter.isOpen = true as IssueFilterOptions['isOpen'];
+          if (value === CLOSE)
+            filter.isOpen = false as IssueFilterOptions['isOpen'];
           break;
 
         case LABEL_KEY:
-          filter.label = {
-            property: 'title',
-            value,
-          };
+          filter.labelTitle = value as IssueFilterOptions['labelTitle'];
           break;
 
         case MILESTONE_KEY:
-          filter.milestone = {
-            property: 'title',
-            value,
-          };
+          filter.milestoneTitle = value as IssueFilterOptions['milestoneTitle'];
           break;
 
         default:
@@ -106,7 +102,8 @@ export default function useSearchParamsHandlers() {
   };
 
   const applySearchQuery = (searchQuery: string) => {
-    const { isOpen, label, likes, milestone } = parseSearchQuery(searchQuery);
+    const { isOpen, labelTitle, likes, milestoneTitle } =
+      parseSearchQuery(searchQuery);
     searchParams.delete(OPEN_STATUS_KEY);
     searchParams.delete(LIKE_KEY);
     searchParams.delete(LABEL_KEY);
@@ -114,8 +111,8 @@ export default function useSearchParamsHandlers() {
 
     if (isOpen !== undefined)
       searchParams.set(OPEN_STATUS_KEY, isOpen ? OPEN : CLOSE);
-    if (label) searchParams.set(LABEL_KEY, label.value);
-    if (milestone) searchParams.set(MILESTONE_KEY, milestone.value);
+    if (labelTitle) searchParams.set(LABEL_KEY, labelTitle);
+    if (milestoneTitle) searchParams.set(MILESTONE_KEY, milestoneTitle);
     if (likes?.length) {
       searchParams.delete(LIKE_KEY);
       likes.forEach((value) => searchParams.append(LIKE_KEY, value));
@@ -131,18 +128,11 @@ export default function useSearchParamsHandlers() {
     if (isOpenStatus) filterOptions.isOpen = true;
 
     const labelSearchParam = searchParams.get(LABEL_KEY);
-    if (labelSearchParam)
-      filterOptions.label = {
-        property: 'title',
-        value: labelSearchParam,
-      };
+    if (labelSearchParam) filterOptions.labelTitle = labelSearchParam;
 
     const milestoneSearchParam = searchParams.get(MILESTONE_KEY);
     if (milestoneSearchParam)
-      filterOptions.milestone = {
-        property: 'title',
-        value: milestoneSearchParam,
-      };
+      filterOptions.milestoneTitle = milestoneSearchParam;
 
     const likeSearchParmas = searchParams.getAll(LIKE_KEY);
     if (likeSearchParmas) filterOptions.likes = likeSearchParmas;

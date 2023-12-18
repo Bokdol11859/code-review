@@ -1,10 +1,12 @@
 import { inject, injectable } from 'inversify';
-import { Milestone } from '../../model/milestone';
-import type { MilestoneRepository } from '../../repository/milestone-repository';
+import type {
+  MilestoneRepository,
+  Milestones,
+} from '../../repository/milestone-repository';
 import { TYPES } from '../../../di/types';
 
 export interface GetMilestonesUseCase {
-  invoke: () => Promise<Milestone[]>;
+  invoke: () => Promise<Milestones>;
 }
 
 @injectable()

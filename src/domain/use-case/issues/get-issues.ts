@@ -1,14 +1,13 @@
 import { inject, injectable } from 'inversify';
-import { Issue, IssueFilterOptions } from '../../model/issue';
-import type { IssueRepository } from '../../repository/issue-repository';
+import type {
+  IssueFilterOptions,
+  IssueRepository,
+  IssuesSummary,
+} from '../../repository/issue-repository';
 import { TYPES } from '../../../di/types';
 
 export interface GetIssuesUseCase {
-  invoke: (filterOptions: IssueFilterOptions) => Promise<{
-    data: Issue[];
-    openIssueCount: number;
-    closeIssueCount: number;
-  }>;
+  invoke: (filterOptions: IssueFilterOptions) => Promise<IssuesSummary>;
 }
 
 @injectable()

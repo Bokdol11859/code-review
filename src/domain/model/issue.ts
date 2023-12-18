@@ -1,29 +1,13 @@
-import { Label } from './label';
-import { Milestone } from './milestone';
+type IssueId = Brand<number, 'IssueId'>;
+type IssueTitle = Brand<string, 'IssueTitle'>;
+type IssueContents = Brand<string, 'IssueContents'>;
+type IssueIsOpen = Brand<boolean, 'IssueIsOpen'>;
+type IssueCreatedAt = Brand<Date, 'IssueCreatedAt'>;
 
 export interface Issue {
-  id: Brand<number, Issue>;
-  title: string;
-  isOpen: boolean;
-  createdAt: Date;
-  label: Pick<Label, 'id' | 'title' | 'textColor' | 'backgroundColor'> | null;
-  milestone: Pick<Milestone, 'id' | 'title'> | null;
-}
-
-export interface IssueFilterOption<T, K extends keyof T> {
-  property: K;
-  value: T[K];
-}
-export interface IssueFilterOptions {
-  isOpen?: boolean;
-  label?: IssueFilterOption<Label, 'title'>;
-  milestone?: IssueFilterOption<Milestone, 'title'>;
-  likes?: string[];
-}
-
-export interface NewIssue {
-  title: string;
-  description?: string;
-  labelId?: number;
-  milestoneId?: number;
+  id: IssueId;
+  title: IssueTitle;
+  contents: IssueContents;
+  isOpen: IssueIsOpen;
+  createdAt: IssueCreatedAt;
 }

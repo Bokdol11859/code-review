@@ -4,7 +4,7 @@ import type { IssueRepository } from '../../repository/issue-repository';
 import { TYPES } from '../../../di/types';
 
 export interface OpenIssuesUseCase {
-  invoke: (ids: Brand<number, Issue>[]) => Promise<void>;
+  invoke: (ids: Issue['id'][]) => Promise<void>;
 }
 
 @injectable()
@@ -15,7 +15,7 @@ export class OpenIssues implements OpenIssuesUseCase {
     this._issueRepo = issueRepo;
   }
 
-  async invoke(ids: Brand<number, Issue>[]) {
+  async invoke(ids: Issue['id'][]) {
     return this._issueRepo.openIssues(ids);
   }
 }
