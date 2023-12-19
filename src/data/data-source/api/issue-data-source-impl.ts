@@ -4,11 +4,27 @@ import {
   IssueFilterOptions,
 } from '../../../domain/repository/issue-repository';
 import IssueDataSource from '../issue-data-source';
-import { IssueAPIEntity } from './entity/issue-api-entity';
+import {
+  IssueDetailEntity,
+  IssueSummaryEntity,
+} from '../../entity/issue-api-entity';
 import supabase from './supabase-db/supabase';
 import { injectable } from 'inversify';
+
+// TODO: 타입 오류 해결
 @injectable()
 export default class IssueDataSourceImpl implements IssueDataSource {
+  async getIssue(id: Issue['id']) {
+    const dataQuery = this.buildGetIssueQuery(id);
+    const { data, error } = await dataQuery;
+
+    if (error) throw new Error('이슈를 불러오지 못했습니다.');
+
+    return {
+      data,
+    } as unknown as IssueDetailEntity;
+  }
+
   async getIssues(filterOptions: IssueFilterOptions) {
     const dataQuery = this.buildGetIssuesQuery(filterOptions);
 
@@ -31,12 +47,11 @@ export default class IssueDataSourceImpl implements IssueDataSource {
       throw new Error('이슈를 불러오지 못했습니다.');
     }
 
-    // TODO: 타입 오류 해결
     return {
       data,
       openIssueCount,
       closeIssueCount,
-    } as unknown as IssueAPIEntity;
+    } as unknown as IssueSummaryEntity;
   }
 
   async openIssues(ids: Issue['id'][]): Promise<void> {
@@ -86,6 +101,16 @@ export default class IssueDataSourceImpl implements IssueDataSource {
     if (error) throw new Error('이슈를 생성하지 못했습니다.');
 
     return;
+  }
+
+  private buildGetIssueQuery(id: Issue['id']) {
+    const query = supabase
+      .from('issues')
+      .select(
+        'id, title, is_open, created_at, labels(id,title, text_color, background_color), milestone(id,title)'
+      );
+
+    return query;
   }
 
   private buildGetIssuesQuery(filterOptions: IssueFilterOptions) {

@@ -1,7 +1,7 @@
 import Button from '../../../../../common-ui/button';
 import Menus from '../../../../../common-ui/menus';
 import Table from '../../../../../common-ui/table';
-import { useSelectedIssues } from '../../../selected-issues-context';
+import { useSelectedIssues } from '../../selected-issues-context';
 import useCloseIssues from '../../../use-close-issues';
 import useOpenIssues from '../../../use-open-issues';
 

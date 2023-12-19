@@ -3,7 +3,7 @@ import {
   LabelRepository,
   Labels,
 } from '../../domain/repository/label-repository';
-import { LabelAPIEntity } from '../data-source/api/entity/label-api-entity';
+import { LabelAPIEntity } from '../entity/label-api-entity';
 import type LabelDataSource from '../data-source/label-data-source';
 import { TYPES } from '../../di/types';
 

@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import LabelDataSource from '../label-data-source';
-import { LabelAPIEntity } from './entity/label-api-entity';
+import { LabelAPIEntity } from '../../entity/label-api-entity';
 import supabase from './supabase-db/supabase';
 
 @injectable()

@@ -3,7 +3,7 @@ import {
   MilestoneRepository,
   Milestones,
 } from '../../domain/repository/milestone-repository';
-import { MilestoneAPIEntity } from '../data-source/api/entity/milestone-api-entity';
+import { MilestoneAPIEntity } from '../entity/milestone-api-entity';
 import type MilestoneDataSource from '../data-source/milestone-data-source';
 import { TYPES } from '../../di/types';
 

@@ -1,10 +1,10 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
-import { Issue } from '../../domain/model/issue';
+import { Issue } from '../../../domain/model/issue';
 
 interface SelectedIssuesContextType {
-  selectedIssueIds: Brand<number, Issue>[];
-  toggleIssueSelection: (id: Brand<number, Issue>) => void;
-  selectAllIssues: (ids: Brand<number, Issue>[]) => void;
+  selectedIssueIds: Issue['id'][];
+  toggleIssueSelection: (id: Issue['id']) => void;
+  selectAllIssues: (ids: Issue['id'][]) => void;
   deselectAllIssues: () => void;
 }
 
@@ -17,11 +17,9 @@ const SelectedIssuesContext = createContext<SelectedIssuesContextType>(null!);
 export function SelectedIssuesProvider({
   children,
 }: SelectedIssusProviderProps) {
-  const [selectedIssueIds, setSelectedIssueIds] = useState<
-    Brand<number, Issue>[]
-  >([]);
+  const [selectedIssueIds, setSelectedIssueIds] = useState<Issue['id'][]>([]);
 
-  function toggleIssueSelection(id: Brand<number, Issue>) {
+  function toggleIssueSelection(id: Issue['id']) {
     if (selectedIssueIds.includes(id)) {
       const filteredIssues = selectedIssueIds.filter(
         (issueId) => issueId !== id
@@ -32,7 +30,7 @@ export function SelectedIssuesProvider({
     }
   }
 
-  function selectAllIssues(ids: Brand<number, Issue>[]) {
+  function selectAllIssues(ids: Issue['id'][]) {
     setSelectedIssueIds(ids);
   }
 
