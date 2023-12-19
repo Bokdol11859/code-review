@@ -11,6 +11,13 @@ export interface IssuesSummary {
   closeIssueCount: number;
 }
 
+export interface IssueDetail {
+  data: Pick<Issue, 'id' | 'contents' | 'createdAt' | 'isOpen' | 'title'> & {
+    label: Pick<Label, 'id' | 'title' | 'textColor' | 'backgroundColor'> | null;
+    milestone: Pick<Milestone, 'id' | 'title'> | null;
+  };
+}
+
 export interface IssueFilterOptions {
   isOpen?: boolean;
   labelTitle?: string;
@@ -26,6 +33,7 @@ export interface IssueCreationData {
 }
 
 export interface IssueRepository {
+  getIssue(id: Issue['id']): Promise<IssueDetail>;
   getIssues(filterOptions: IssueFilterOptions): Promise<IssuesSummary>;
   openIssues(ids: Issue['id'][]): Promise<void>;
   closeIssues(ids: Issue['id'][]): Promise<void>;

@@ -2,11 +2,15 @@ import { inject, injectable } from 'inversify';
 import { Issue } from '../../domain/model/issue';
 import {
   IssueCreationData,
+  IssueDetail,
   IssueFilterOptions,
   IssueRepository,
   IssuesSummary,
 } from '../../domain/repository/issue-repository';
-import { IssueAPIEntity } from '../data-source/api/entity/issue-api-entity';
+import {
+  IssueDetailEntity,
+  IssueSummaryEntity,
+} from '../entity/issue-api-entity';
 import type IssueDataSource from '../data-source/issue-data-source';
 import { TYPES } from '../../di/types';
 
@@ -17,12 +21,16 @@ export class IssueRepositoryImpl implements IssueRepository {
   constructor(@inject(TYPES.IssueDataSource) dataSource: IssueDataSource) {
     this._datasource = dataSource;
   }
+  async getIssue(id: Issue['id']): Promise<IssueDetail> {
+    const entity = await this._datasource.getIssue(id);
+
+    return this.mapIssueDetail(entity);
+  }
 
   async getIssues(filterOptions: IssueFilterOptions): Promise<IssuesSummary> {
-    const { data, openIssueCount, closeIssueCount } =
-      await this._datasource.getIssues(filterOptions);
+    const entity = await this._datasource.getIssues(filterOptions);
 
-    return this.mapEntityToModel({ data, openIssueCount, closeIssueCount });
+    return this.mapIssueSummary(entity);
   }
 
   async openIssues(ids: Issue['id'][]): Promise<void> {
@@ -36,7 +44,25 @@ export class IssueRepositoryImpl implements IssueRepository {
     return this._datasource.createIssue(newIssue);
   }
 
-  private mapEntityToModel(entity: IssueAPIEntity): IssuesSummary {
+  private mapIssueDetail(entity: IssueDetailEntity): IssueDetail {
+    const {
+      data: { id, contents, title, created_at, is_open, labels, milestones },
+    } = entity;
+
+    return {
+      data: {
+        id,
+        contents,
+        title,
+        createdAt: created_at,
+        isOpen: is_open,
+        label: labels,
+        milestone: milestones,
+      },
+    } as IssueDetail;
+  }
+
+  private mapIssueSummary(entity: IssueSummaryEntity): IssuesSummary {
     const { data, openIssueCount, closeIssueCount } = entity;
 
     return {
