@@ -11,7 +11,7 @@ export default function useOpenIssues() {
   const queryClient = useQueryClient();
 
   const { mutate: openIssues, isPending: isOpening } = useMutation({
-    mutationFn: (ids: Brand<number, Issue>[]) => openIssuesUseCase.invoke(ids),
+    mutationFn: (ids: Issue['id'][]) => openIssuesUseCase.invoke(ids),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['issues'] });
     },

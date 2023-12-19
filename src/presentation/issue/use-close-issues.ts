@@ -12,7 +12,7 @@ export default function useCloseIssues() {
   const queryClient = useQueryClient();
 
   const { mutate: closeIssues, isPending: isClosing } = useMutation({
-    mutationFn: (ids: Brand<number, Issue>[]) => closeIssuesUseCase.invoke(ids),
+    mutationFn: (ids: Issue['id'][]) => closeIssuesUseCase.invoke(ids),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['issues'] });
     },

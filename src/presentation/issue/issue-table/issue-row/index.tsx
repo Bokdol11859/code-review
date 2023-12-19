@@ -1,12 +1,12 @@
 import Checkbox from '../../../../common-ui/checkbox';
 import Label from '../../../../common-ui/label';
 import Table from '../../../../common-ui/table';
-import { Issue } from '../../../../domain/model/issue';
+import { IssuesSummary } from '../../../../domain/repository/issue-repository';
 import { timeDiffFromNow } from '../../../../utils/helpers';
-import { useSelectedIssues } from '../../selected-issues-context';
+import { useSelectedIssues } from '../selected-issues-context';
 
 interface IssueRowProps {
-  issue: Issue;
+  issue: IssuesSummary['data'][number];
 }
 
 function IssueRow({ issue }: IssueRowProps) {

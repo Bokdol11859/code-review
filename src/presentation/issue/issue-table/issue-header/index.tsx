@@ -1,14 +1,14 @@
 import Button from '../../../../common-ui/button';
 import Checkbox from '../../../../common-ui/checkbox';
-import { Issue } from '../../../../domain/model/issue';
-import { useSelectedIssues } from '../../selected-issues-context';
+import { IssuesSummary } from '../../../../domain/repository/issue-repository';
+import { useSelectedIssues } from '../selected-issues-context';
 import LabelFilterMenu from './label-filter-menu';
 import MilestoneFilterMenu from './milestone-filter-menu';
 import StatusFilterButtons from './status-filter-buttons';
 import StatusUpdateMenu from './status-update-menu';
 
 interface IssueHeaderProps {
-  issues: Issue[] | undefined;
+  issues: IssuesSummary['data'] | undefined;
   openIssueCount: number | undefined;
   closeIssueCount: number | undefined;
 }
