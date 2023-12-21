@@ -1,0 +1,1 @@
+import { GetServerSidePropsContext } from 'next';
