@@ -1,0 +1,68 @@
+{
+  "plugins": ["import"],
+  "extends": ["next/core-web-vitals", "plugin:import/recommended"],
+  "rules": {
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "import/named": 0,
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "groups": [
+          "type",
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "unknown"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "next*",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "react*",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "src/@hooks/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "src/@Component/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "src/@utils/**",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "next*",
+          "react*",
+          "src/@hooks/**",
+          "src/@Component/**",
+          "src/@utils/**"
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  }
+}
