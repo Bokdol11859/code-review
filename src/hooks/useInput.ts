@@ -5,9 +5,13 @@ const useInput = (
   prevConditionCallback: (e: React.ChangeEvent<HTMLInputElement>) => boolean
 ) => {
   const [value, setValue] = useState(initialState);
+  const [error, setError] = useState(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!prevConditionCallback(e)) return;
+    if (!prevConditionCallback(e)) {
+      setError(() => true);
+      return;
+    }
 
     setValue(e.target.value);
   };
@@ -15,6 +19,8 @@ const useInput = (
   return {
     value,
     onChange,
+    error,
+    setValue,
   };
 };
 

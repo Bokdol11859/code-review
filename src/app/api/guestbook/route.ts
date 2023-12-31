@@ -10,7 +10,7 @@ export async function GET() {
   if (snapShot.exists()) {
     return NextResponse.json(
       {
-        guestbook: await snapShot.val().comments,
+        guestbook: await snapShot.val(),
       },
       {
         status: 200,
@@ -31,28 +31,24 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  await push(ref(DB, '/guestbook'), {
-    comment: body.comment,
-    commentTime: body.time,
-  })
-    .then((val) => {
-      return NextResponse.json(
-        {
-          guestBook: val,
-        },
-        {
-          status: 200,
-        }
-      );
-    })
-    .catch((e) => {
-      return NextResponse.json(
-        {
-          e,
-        },
-        {
-          status: 502,
-        }
-      );
+  try {
+    const val = await push(ref(DB, '/guestbook'), {
+      comment: body.comment,
+      commentTime: body.time,
     });
+
+    return NextResponse.json(
+      {
+        val,
+      },
+      {
+        status: 200,
+      }
+    );
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json(e, {
+      status: 502,
+    });
+  }
 }

@@ -18,10 +18,10 @@ export default function useSearchPost(searchInput: string) {
       if (allPostResponse.ok) {
         setPosts(
           allPosts.filter((post) =>
-            post.title
-              .trim()
-              .toLowerCase()
-              .includes(searchInput.trim().toLowerCase())
+            post?.title
+              ?.trim()
+              ?.toLowerCase()
+              ?.includes(searchInput?.trim()?.toLowerCase())
           )
         );
       }

@@ -1,3 +1,8 @@
 export type GuestBook = {
-  comments: {};
+  guestbook: {
+    [key: string]: {
+      comment: string;
+      commentTime: string;
+    };
+  };
 };

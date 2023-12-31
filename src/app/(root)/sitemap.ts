@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-import { getAllPosts } from '../../lib/api';
+import { getAllPosts } from '../../../lib/api';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const SITE_SUFFIX = 'https://hj-devlog.vercel.app';

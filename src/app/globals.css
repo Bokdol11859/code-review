@@ -13,11 +13,7 @@ footer {
 main {
   font-family: inherit;
   min-height: calc(100vh - 120px);
-}
-
-ul,
-li {
-  list-style-type: none;
+  font-size: 1rem;
 }
 
 .TOC {

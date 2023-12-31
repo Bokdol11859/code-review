@@ -1,7 +1,7 @@
 import '../globals.css';
 import { Metadata } from 'next';
 
-import { Lora } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import Head from 'next/head';
 
 import Providers from '@/app/queryClientProvider';
@@ -19,7 +19,7 @@ declare global {
   }
 }
 
-const baseFont = Lora({
+const baseFont = Montserrat({
   subsets: ['latin'],
   preload: true,
   display: 'swap',

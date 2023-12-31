@@ -79,7 +79,7 @@ export default function PostSearchModal({
         {posts.map((post) => (
           <Link
             key={post.title}
-            href={`blog/${post.slug}`}
+            href={`/blog/${post.slug}`}
             onClick={() => onCloseModal()}
             style={{
               color: 'inherit',

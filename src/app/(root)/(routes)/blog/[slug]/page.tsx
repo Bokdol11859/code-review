@@ -114,11 +114,60 @@ export default function Post({
             ),
             code: ({ children }) => <CodeBlock>{children as string}</CodeBlock>,
             h2: ({ children }) => {
-              return <h2 id={children as string}>{children}</h2>;
+              return (
+                <h2
+                  id={children as string}
+                  style={{
+                    fontSize: '1.3rem',
+                  }}
+                >
+                  {children}
+                </h2>
+              );
             },
             h3: ({ children }) => {
-              return <h3 id={children as string}>{children}</h3>;
+              return (
+                <h3
+                  id={children as string}
+                  style={{
+                    fontSize: '1.2rem',
+                  }}
+                >
+                  {children}
+                </h3>
+              );
             },
+            p: ({ children }) => {
+              return (
+                <p
+                  style={{
+                    fontSize: '1rem',
+                  }}
+                >
+                  {children}
+                </p>
+              );
+            },
+            li: ({ children }) => {
+              return (
+                <li
+                  style={{
+                    fontSize: '1rem',
+                  }}
+                >
+                  {children}
+                </li>
+              );
+            },
+            pre: ({ children }) => (
+              <code
+                style={{
+                  fontSize: '1rem',
+                }}
+              >
+                {children}
+              </code>
+            ),
           }}
         >
           {post.content}

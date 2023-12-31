@@ -1,7 +1,7 @@
 'use client';
 
+import usePostQuery from '@/hooks/queries/usePostQuery';
 import useObserver from '@/hooks/useObserver';
-import usePostQuery from '@/hooks/usePostQuery';
 
 import PostItem from './PostItem';
 
