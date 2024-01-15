@@ -1,0 +1,67 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# lighthouseci
+.lighthouseci
+/lhci_reports/
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+.env
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+.lighthouserc.js
+.commitlint.config.js
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Sentry Auth Token
+.sentryclirc
+.sentry.client.config.ts
+.sentry.edge.config.ts
+.sentry.server.config.ts
+
+.tsconfig.json
+
+public
+
+posts
+.next
+.vercel
+.lighthouseci
+.husky
+
+lhci_reports
+.vscode
+# package.json
+package-lock.json
+
+public
